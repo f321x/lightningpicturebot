@@ -8,7 +8,7 @@ Setup:
 Optain Dalle 2 API Key:
 
     Go to https://labs.openai.com/
-    Open Network Tab in Developer Tools
+    Open Network Tab in Developer Tools (Browser)
     Type a prompt and press "Generate"
     Look for fetch to https://labs.openai.com/api/labs/tasks
     In the request header look for authorization then get the Bearer Token
