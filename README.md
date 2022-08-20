@@ -25,3 +25,6 @@ Put the API keys in the .env file
 install python-telegram-bot v20 with "pip install python-telegram-bot --pre"
 
 If you encounter any possible improvements, bugs etc... please tell me so i can learn
+
+Feel free to tip me some sats if I provided value to you: 
+https://legend.lnbits.com/tipjar/354
