@@ -7,6 +7,7 @@ from dalle2 import Dalle2
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 from dotenv import load_dotenv
+import qrcode
 
 load_dotenv()
 
@@ -41,6 +42,10 @@ async def problem(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_state[update.effective_chat.id] = [update.message.text, payment.getinvoice()]
+    img = qrcode.make("lightning:" + user_state[update.effective_chat.id][1]['payment_request'])
+    img.save(str(update.effective_chat.id)+".png")
+    await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(str(update.effective_chat.id)+".png", 'rb'))
+    os.remove(str(update.effective_chat.id)+".png")
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="lightning:" + user_state[update.effective_chat.id][1]['payment_request'])
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Press /generate once you paid the invoice")
@@ -51,7 +56,6 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="Generating pictures, this will take some time...")
         file_paths = dalle.generate_and_download(user_state[update.effective_chat.id][0])
-        user_state.pop(update.effective_chat.id)
         if isinstance(file_paths, list):
             for n in file_paths:
                 await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(n, 'rb'))
@@ -59,6 +63,7 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id,
                                            text=messages.violation)
+        user_state.pop(update.effective_chat.id)
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="You haven't paid, press /generate again once you paid the invoice")
@@ -99,3 +104,5 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
+
+
