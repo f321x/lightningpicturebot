@@ -57,7 +57,7 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 os.remove(n)
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id,
-                                           text="messages.violation")
+                                           text=messages.violation)
         user_state.pop(update.effective_chat.id)
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id,
