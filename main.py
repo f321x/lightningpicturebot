@@ -51,6 +51,7 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="Generating pictures, this will take some time...")
         file_paths = dalle.generate_and_download(user_state[update.effective_chat.id][0])
+        user_state.pop(update.effective_chat.id)
         if isinstance(file_paths, list):
             for n in file_paths:
                 await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(n, 'rb'))
@@ -58,7 +59,6 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id,
                                            text=messages.violation)
-        user_state.pop(update.effective_chat.id)
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="You haven't paid, press /generate again once you paid the invoice")
