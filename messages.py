@@ -10,7 +10,7 @@ help = "Type in a command for DALLE2 like the examples you can find on the OpenA
        "Lightning invoice with a Lightning enabled Bitcoin wallet like Blixt Wallet or Phoenix Wallet (easy), " \
        "then the Bot will send you the generated Pictures after some time (minutes). If you have problems contact me " \
        "on Telegram @f321x or read the source code of this Bot on github to understand how it works. If you encounter " \
-       "any problems or didn't get a result press /problem "
+       "any problems or didn't get a result press /problem . Press /source to see the source code of the bot "
 
 terms = "Common woke stuff, so just don't try anything controversial"
 
@@ -21,3 +21,5 @@ problem = "If you encounter any problem please contact @f321x on TG and i will r
 
 violation = "Your message probably violated the OpenAI /terms so DALLE didn't return pictures. I paid for this OpenAI " \
             "cycle anyways but can understand if you want your sats back so don't hesitate to contact me @f321x "
+
+source = "https://github.com/exitfiat/dalle2telegrambot"

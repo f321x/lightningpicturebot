@@ -43,9 +43,10 @@ async def problem(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_state[update.effective_chat.id] = [update.message.text, payment.getinvoice()]
     img = qrcode.make("lightning:" + user_state[update.effective_chat.id][1]['payment_request'])
-    img.save(str(update.effective_chat.id)+".png")
-    await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(str(update.effective_chat.id)+".png", 'rb'))
-    os.remove(str(update.effective_chat.id)+".png")
+    img.save(str(update.effective_chat.id) + ".png")
+    await context.bot.send_photo(chat_id=update.effective_chat.id,
+                                 photo=open(str(update.effective_chat.id) + ".png", 'rb'))
+    os.remove(str(update.effective_chat.id) + ".png")
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="lightning:" + user_state[update.effective_chat.id][1]['payment_request'])
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Press /generate once you paid the invoice")
@@ -73,6 +74,10 @@ async def terms(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.terms)
 
 
+async def source(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.source)
+
+
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="Sorry, I didn't understand that command. Please try /start or /help")
@@ -89,6 +94,7 @@ if __name__ == '__main__':
     payment_handler = CommandHandler('generate', paid)
     term_handler = CommandHandler('terms', terms)
     problem_handler = CommandHandler('problem', problem)
+    source_handler = CommandHandler('source', source)
 
     # enable handlers
     application.add_handler(start_handler)
@@ -97,6 +103,7 @@ if __name__ == '__main__':
     application.add_handler(payment_handler)
     application.add_handler(term_handler)
     application.add_handler(problem_handler)
+    application.add_handler(source_handler)
 
     # unknown handler
     unknown_handler = MessageHandler(filters.COMMAND, unknown)
@@ -104,5 +111,3 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
-
-
