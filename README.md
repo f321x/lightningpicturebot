@@ -14,11 +14,13 @@ Optain Dalle 2 API Key:
     In the request header look for authorization then get the Bearer Token
 
 Optain LNBits Key:
-  Run your own LNBits instance or use a public available one like legend.lnbits.com
-  Create a wallet and click on API Info on the right side, you need the Invoice key
- 
+
+    Run your own LNBits instance or use a public available one like legend.lnbits.com
+    Create a wallet and click on API Info on the right side, you need the Invoice key
+     
 Create Telegram Bot and get API Key:
-  search the Internet for "create telegram bot botfather"
+
+    search the Internet for "create telegram bot botfather"
 
 Put the API keys in the .env file
 
