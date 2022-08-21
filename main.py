@@ -33,29 +33,35 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.help)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.todo)
 
+
 async def problem(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.problem)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.todo)
+
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_state[update.effective_chat.id] = [update.message.text, payment.getinvoice()]
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="lightning:" + user_state[update.effective_chat.id][1]['payment_request'])
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Press /paid once you paid the invoice")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Press /generate once you paid the invoice")
 
 
 async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if payment.checkinvoice(user_state[update.effective_chat.id][1]['payment_hash']) == True:
+    if payment.checkinvoice(user_state[update.effective_chat.id][1]['payment_hash']):
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="Generating pictures, this will take some time...")
         file_paths = dalle.generate_and_download(user_state[update.effective_chat.id][0])
-        for n in file_paths:
-            await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(n, 'rb'))
-            os.remove(n)
+        if isinstance(file_paths, list):
+            for n in file_paths:
+                await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(n, 'rb'))
+                os.remove(n)
+        else:
+            await context.bot.send_message(chat_id=update.effective_chat.id,
+                                           text="messages.violation")
         user_state.pop(update.effective_chat.id)
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id,
-                                       text="You haven't paid, press /paid again once you paid the invoice")
+                                       text="You haven't paid, press /generate again once you paid the invoice")
 
 
 async def terms(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -75,7 +81,7 @@ if __name__ == '__main__':
     start_handler = CommandHandler('start', start)
     help_handler = CommandHandler('help', help)
     echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
-    payment_handler = CommandHandler('paid', paid)
+    payment_handler = CommandHandler('generate', paid)
     term_handler = CommandHandler('terms', terms)
     problem_handler = CommandHandler('problem', problem)
 
@@ -93,4 +99,3 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
-
