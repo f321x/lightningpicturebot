@@ -21,7 +21,7 @@ problem = "If you encounter any problem please contact @f321x on TG and i will r
 
 violation = "Your message probably violated the OpenAI /terms so DALLE didn't return pictures. I paid for this OpenAI " \
             "cycle anyways but can understand if you want your sats back so don't hesitate to contact me @f321x " \
-            "If this message comes up every time, even though your commands aren't against the /terms in any my " \
-            "OpenAI account probably ran out of Tokens please contact me so i can refill them quickly "
+            "If this message comes up every time, even though your commands aren't against the /terms in any way my " \
+            "OpenAI account probably ran out of Tokens, so please contact me so i can refill them quickly "
 
 source = "https://github.com/exitfiat/dalle2telegrambot"
