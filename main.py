@@ -13,6 +13,7 @@ load_dotenv()
 
 # logging configuration
 logging.basicConfig(
+    filename="mylog.log",
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
