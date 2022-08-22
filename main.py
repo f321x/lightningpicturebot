@@ -57,7 +57,7 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat.id in user_state:
         if payment.checkinvoice(user_state[update.effective_chat.id][1]['payment_hash']):
             await context.bot.send_message(chat_id=update.effective_chat.id,
-                                           text="Generating pictures, this will take some time...")
+                                           text="Generating pictures, this will take around 1 minute..")
             file_paths = dalle.generate_and_download(user_state[update.effective_chat.id][0])
             if isinstance(file_paths, list):
                 for n in file_paths:
