@@ -10,7 +10,9 @@ help = "Type in a command for DALLE2 like the examples you can find on the OpenA
        "Lightning invoice with a Lightning enabled Bitcoin wallet like Blixt Wallet or Phoenix Wallet (easy), " \
        "then the Bot will send you the generated Pictures after some time (minutes). If you have problems contact me " \
        "on Telegram @f321x or read the source code of this Bot on github to understand how it works. If you encounter " \
-       "any problems or didn't get a result press /problem . Press /source to see the source code of the bot "
+       "any problems or didn't get a result press /problem . Press /source to see the source code of the bot. Also " \
+       "don't use Bluewallet with the standard node as they have liquidity problems which will cause your payment to " \
+       "fail. "
 
 terms = "https://labs.openai.com/policies/terms"
 
