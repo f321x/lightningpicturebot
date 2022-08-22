@@ -27,6 +27,7 @@ user_state = {}
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.start)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.group)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.todo)
 
 

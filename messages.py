@@ -25,3 +25,6 @@ violation = "Your message probably violated the OpenAI /terms so DALLE didn't re
             "OpenAI account probably ran out of Tokens, so please contact me so i can refill them quickly "
 
 source = "https://github.com/exitfiat/dalle2telegrambot"
+
+group = "Also there is a little group chat in which you can discuss and share your pictures and bot experience: " \
+        "https://t.me/dalle2lightningbotgroup "
