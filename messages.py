@@ -31,7 +31,8 @@ source = "https://github.com/exitfiat/dalle2telegrambot"
 group = "Also there is a little group chat in which you can discuss and share your pictures and bot experience: " \
         "https://t.me/dalle2lightningbotgroup "
 
-offline = "Unfortunately i had to deactivate the Bot because OpenAI gives me the message: Buying credits is " \
-          "temporarily unavailable. Please try again in a few hours. I hope to be able to buy new AI Tokens tomorrow " \
-          "to keep this service running. Please try again in some hours, i'm very sorry for the interruption. If you " \
-          "are bored in the meanwhile have a look at the /source of this bot. "
+offline = "Unfortunately i had to deactivate the Bot because OpenAI currently has problems with their fiat payment " \
+          "processor and i cant buy new Tokens (lol). Please try again in a few hours, i'll sleep now and restart as " \
+          "soon as i can buy their AI tokens again. ETA 10am UTC+2. Please try " \
+          "again in some hours, i'm very sorry for the interruption. If you are bored in the meanwhile have a look at " \
+          "the /source of this bot, maybe you can improve it. "
