@@ -67,11 +67,13 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
                             await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(n, 'rb'))
                             os.remove(n)
                     else:
+                        logging.info(user_state[update.effective_chat.id][0])
                         await context.bot.send_message(chat_id=update.effective_chat.id,
                                                        text=messages.violation)
                     user_state.pop(update.effective_chat.id)
                     break
                 except:
+                    logging.error(user_state[update.effective_chat.id][0])
                     await context.bot.send_message(chat_id=update.effective_chat.id,
                                                    text="Failed, trying again. If it doesn't give you pictures in a "
                                                         "minute click /problem")
