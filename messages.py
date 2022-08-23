@@ -18,8 +18,7 @@ terms = "https://labs.openai.com/policies/terms"
 
 problem = "If you encounter any problem please contact @f321x on TG and i will refund or help you. If you paid but " \
           "didn't get a result please make a screenshot and send it to me with a refund invoice. The reason for the " \
-          "missing pictures is probably that you violated the OpenAI /terms by typing in a slightly controversial " \
-          "command. "
+          "missing pictures is probably some weird error with the OpenAI API which happens rarely but frequently. "
 
 violation = "Your message probably violated the OpenAI /terms so DALLE didn't return pictures. I paid for this OpenAI " \
             "cycle anyways but can understand if you want your sats back so don't hesitate to contact me @f321x " \
