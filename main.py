@@ -50,7 +50,8 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                  photo=open(str(update.effective_chat.id) + ".png", 'rb'))
     os.remove(str(update.effective_chat.id) + ".png")
     await context.bot.send_message(chat_id=update.effective_chat.id,
-                                   text="`lightning:" + user_state[update.effective_chat.id][1]['payment_request']+"`")
+                                   text="`lightning:" + user_state[update.effective_chat.id][1]['payment_request']+"`",
+                                   parse_mode='MarkdownV2')
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Press /generate once you paid the invoice")
 
 
