@@ -59,15 +59,22 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if payment.checkinvoice(user_state[update.effective_chat.id][1]['payment_hash']):
             await context.bot.send_message(chat_id=update.effective_chat.id,
                                            text="Generating pictures, this will take around 1 minute..")
-            file_paths = dalle.generate_and_download(user_state[update.effective_chat.id][0])
-            if isinstance(file_paths, list):
-                for n in file_paths:
-                    await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(n, 'rb'))
-                    os.remove(n)
-            else:
-                await context.bot.send_message(chat_id=update.effective_chat.id,
-                                               text=messages.violation)
-            user_state.pop(update.effective_chat.id)
+            for generating in range(2):
+                try:
+                    file_paths = dalle.generate_and_download(user_state[update.effective_chat.id][0])
+                    if isinstance(file_paths, list):
+                        for n in file_paths:
+                            await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(n, 'rb'))
+                            os.remove(n)
+                    else:
+                        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                                       text=messages.violation)
+                    user_state.pop(update.effective_chat.id)
+                    break
+                except:
+                    await context.bot.send_message(chat_id=update.effective_chat.id,
+                                                   text="Failed, trying again. If it doesn't give you pictures in a "
+                                                        "minute click /problem")
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id,
                                            text="You haven't paid, press /generate again once you paid the invoice")
@@ -116,3 +123,4 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
+
