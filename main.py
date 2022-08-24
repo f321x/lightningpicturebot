@@ -8,6 +8,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 from dotenv import load_dotenv
 import qrcode
+import time
 
 load_dotenv()
 
@@ -78,6 +79,7 @@ async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await context.bot.send_message(chat_id=update.effective_chat.id,
                                                    text="Failed, trying again. If it doesn't give you pictures in a "
                                                         "minute click /problem")
+                    time.sleep(15)
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id,
                                            text="You haven't paid, press /generate again once you paid the invoice")
