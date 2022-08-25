@@ -28,9 +28,13 @@ user_state = {}
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.start)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.group)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.todo)
+    try:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.start)
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.group)
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.todo)
+    except:
+        print("Sending /start message failed")
+        logging.error("Sending start message failed")
 
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -47,13 +51,17 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_state[update.effective_chat.id] = [update.message.text, payment.getinvoice()]
     img = qrcode.make("lightning:" + user_state[update.effective_chat.id][1]['payment_request'])
     img.save(str(update.effective_chat.id) + ".png")
-    await context.bot.send_photo(chat_id=update.effective_chat.id,
-                                 photo=open(str(update.effective_chat.id) + ".png", 'rb'))
-    os.remove(str(update.effective_chat.id) + ".png")
-    await context.bot.send_message(chat_id=update.effective_chat.id,
-                                   text="`lightning:" + user_state[update.effective_chat.id][1]['payment_request']+"`",
-                                   parse_mode='MarkdownV2')
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Press /generate once you paid the invoice")
+    try:
+        await context.bot.send_photo(chat_id=update.effective_chat.id,
+                                     photo=open(str(update.effective_chat.id) + ".png", 'rb'))
+        os.remove(str(update.effective_chat.id) + ".png")
+        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                       text="`lightning:" + user_state[update.effective_chat.id][1]['payment_request']+"`",
+                                       parse_mode='MarkdownV2')
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Press /generate once you paid the invoice")
+    except:
+        logging.error("Answer to command failed")
+        print("Answer to command failed")
 
 
 async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
