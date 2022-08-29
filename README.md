@@ -21,6 +21,10 @@ Optain LNBits Key:
 Create Telegram Bot and get API Key:
 
     search the Internet for "create telegram bot botfather"
+    
+Optain Stable Diffusion API Key with Dezgo:
+
+    https://rapidapi.com/dezgo/api/dezgo/
 
 Put the API keys in the .env file
 
