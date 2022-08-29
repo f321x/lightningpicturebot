@@ -1,5 +1,5 @@
-# dalle2telegrambot
-Telegram bot for Open AI Dalle 2 with Bitcoin Lightning payments
+# lightningpicturebot
+Telegram bot for AI Image generation (Open AI Dalle 2, Stable Diffusion) with Bitcoin Lightning payments
 
 This is the first real thing i programmed, so please be careful using it and have a look at the code first.
 
