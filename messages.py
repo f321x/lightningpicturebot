@@ -1,36 +1,34 @@
 # messages to keep main clean
 
-start = "Welcome to the OpenAI DALLE 2 Bot by @f321x ! Please don't type in stuff forbidden in the OpenAI /terms, " \
-        "otherwise my Account could get banned. I charge 1000 satoshi to pay for the DallE credits and the VPS this " \
-        "bot is running on. If you need help press /help, otherwise have fun!!! "
+start = "Welcome to the Lightning picture bot by @f321x ! \n\nThis bot supports DALLE2 (censored) and Stable Diffusion (" \
+        "uncensored). \n\nI charge 1000 satoshi to pay for the picture generation and the server this bot is running on. " \
+        "\n\nIf you need help press /help, otherwise have fun!!! "
 
-todo = "You can now type in the image description you want to pass to DALLE2:"
+todo = "You can now type in the image description you want to pass to the AI:"
 
-help = "Type in a command for DALLE2 like the examples you can find on the OpenAI DALLE2 website, then pay the " \
+help = "Type in a command for the AI like the examples you can find in the group chat, then pay the " \
        "Lightning invoice with a Lightning enabled Bitcoin wallet like Blixt Wallet or Phoenix Wallet (easy), " \
-       "then the Bot will send you the generated Pictures after some time (minutes). If you have problems contact me " \
-       "on Telegram @f321x or read the source code of this Bot on github to understand how it works. If you encounter " \
-       "any problems or didn't get a result press /problem . Press /source to see the source code of the bot. Also " \
-       "don't use Bluewallet with the standard node as they have liquidity problems which will cause your payment to " \
-       "fail. "
+       "then the Bot will send you the generated Pictures after some time (minutes).\n\nIf you have problems contact me " \
+       "on Telegram @f321x or read the source code of this Bot on github to understand how it works.\n\nIf you " \
+       "encounter any problems or didn't get a result press /problem .\n\nPress /source to see the source code of the " \
+       "bot.\n\nAlso don't use Bluewallet with the standard node as they have liquidity problems which will cause " \
+       "your payment to fail. "
 
-terms = "https://labs.openai.com/policies/terms"
+terms = "These are the terms for DALLE2 https://labs.openai.com/policies/terms"
 
-problem = "If you encounter any problem please contact @f321x on TG and i will refund or help you. If you paid but " \
-          "didn't get a result please make a screenshot and send it to me with a refund invoice. The reason for the " \
-          "missing pictures is probably some weird error with the OpenAI API which happens rarely but frequently. "
+problem = "If you encounter any problem please contact @f321x on TG and i will refund or help you. \n\nIf you paid but " \
+          "didn't get a result please make a screenshot and send it to me with a refund invoice. \n\nThe reason for " \
+          "the failure is probably some weird error with the API which happens sometimes. "
 
 violation = "Your message violated the OpenAI /terms so DALLE didn't return pictures. Please try not to violate the " \
             "terms otherwise the account serving this bot will probably get banned. DALLE doesn't like politics, " \
-            "violence, public figures (names) and erotic stuff. Type in /terms to read them. Thanks! "
+            "violence, public figures (names) and erotic stuff. Type in /terms to read them. \n\nIf you want " \
+            "uncensored image generation use Stable Diffusion for the weird stuff :D Thanks! "
 
-source = "https://github.com/exitfiat/dalle2telegrambot"
+source = "https://github.com/exitfiat/lightningpicturebot"
 
 group = "Also there is a little group chat in which you can discuss and share your pictures and bot experience: " \
-        "https://t.me/dalle2lightningbotgroup "
+        "https://t.me/lightningpicturebot"
 
-offline = "Unfortunately i had to deactivate the Bot because OpenAI currently has problems with their fiat payment " \
-          "processor and i cant buy new Tokens (lol). Please try again in a few hours, i'll sleep now and restart as " \
-          "soon as i can buy their AI tokens again. ETA 10am UTC+2. Please try " \
-          "again in some hours, i'm very sorry for the interruption. If you are bored in the meanwhile have a look at " \
-          "the /source of this bot, maybe you can improve it. "
+offline = "Unfortunately i had to deactivate the Bot because i can't guarantee flawless function. Please come back " \
+          "later "
