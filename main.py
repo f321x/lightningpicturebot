@@ -1,5 +1,6 @@
 import messages
 import payment
+import stablediffusion
 import os
 import logging
 from dalle2 import Dalle2
@@ -58,39 +59,71 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="`lightning:" + user_state[update.effective_chat.id][1]['payment_request']+"`",
                                        parse_mode='MarkdownV2')
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Press /generate once you paid the invoice")
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Press \n/generate_dalle2 \nor \n "
+                                                                              "/generate_stablediffusion \nonce you "
+                                                                              "paid the invoice")
     except:
         logging.error("Answer to command failed")
         print("Answer to command failed")
 
 
-async def paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.id in user_state:
-        if payment.checkinvoice(user_state[update.effective_chat.id][1]['payment_hash']):
-            await context.bot.send_message(chat_id=update.effective_chat.id,
+async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    if chat_id in user_state:
+        if payment.checkinvoice(user_state[chat_id][1]['payment_hash']):
+            await context.bot.send_message(chat_id=chat_id,
                                            text="Generating pictures, this will take around 1 minute..")
             for generating in range(2):
                 try:
-                    file_paths = dalle.generate_and_download(user_state[update.effective_chat.id][0])
+                    file_paths = dalle.generate_and_download(user_state[chat_id][0])
                     if isinstance(file_paths, list):
                         for n in file_paths:
-                            await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(n, 'rb'))
+                            await context.bot.send_photo(chat_id=chat_id, photo=open(n, 'rb'))
                             os.remove(n)
                     else:
-                        logging.info(user_state[update.effective_chat.id][0])
-                        await context.bot.send_message(chat_id=update.effective_chat.id,
+                        logging.info(user_state[chat_id][0])
+                        await context.bot.send_message(chat_id=chat_id,
                                                        text=messages.violation)
-                    user_state.pop(update.effective_chat.id)
+                    user_state.pop(chat_id)
                     break
                 except:
-                    logging.error(user_state[update.effective_chat.id][0])
-                    await context.bot.send_message(chat_id=update.effective_chat.id,
+                    logging.error(user_state[chat_id][0])
+                    await context.bot.send_message(chat_id=chat_id,
+                                                   text="Failed, trying again. If it doesn't give you pictures in a "
+                                                        "minute click /problem")
+                    time.sleep(15)
+        else:
+            await context.bot.send_message(chat_id=chat_id,
+                                           text="You haven't paid, press \n/generate_dalle2 again once you paid the "
+                                                "invoice")
+    else:
+        pass
+
+
+async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    if chat_id in user_state:
+        if payment.checkinvoice(user_state[chat_id][1]['payment_hash']):
+            await context.bot.send_message(chat_id=chat_id,
+                                           text="Generating pictures, this will take around 1 minute..")
+            for generating in range(2):
+                try:
+                    stablediffusion.generate_sd_normal(user_state[chat_id][0], str(chat_id))
+                    await context.bot.send_photo(chat_id=chat_id, photo=open('sd_picture_' + str(chat_id) + '.png', 'rb'))
+                    os.remove('sd_picture_' + str(chat_id) + '.png')
+                    logging.info('sd: ' + user_state[chat_id][0])
+                    user_state.pop(chat_id)
+                    break
+                except:
+                    logging.error(user_state[chat_id][0])
+                    await context.bot.send_message(chat_id=chat_id,
                                                    text="Failed, trying again. If it doesn't give you pictures in a "
                                                         "minute click /problem")
                     time.sleep(15)
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id,
-                                           text="You haven't paid, press /generate again once you paid the invoice")
+                                           text="You haven't paid, press \n/generate_stablediffusion again once you "
+                                                "paid the invoice")
     else:
         pass
 
@@ -116,7 +149,8 @@ if __name__ == '__main__':
     start_handler = CommandHandler('start', start)
     help_handler = CommandHandler('help', help)
     echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
-    payment_handler = CommandHandler('generate', paid)
+    payment_handler_dalle = CommandHandler('generate_dalle2', paid_dalle)
+    payment_handler_sd = CommandHandler('generate_stablediffusion', paid_stablediffusion)
     term_handler = CommandHandler('terms', terms)
     problem_handler = CommandHandler('problem', problem)
     source_handler = CommandHandler('source', source)
@@ -125,7 +159,8 @@ if __name__ == '__main__':
     application.add_handler(start_handler)
     application.add_handler(help_handler)
     application.add_handler(echo_handler)
-    application.add_handler(payment_handler)
+    application.add_handler(payment_handler_dalle)
+    application.add_handler(payment_handler_sd)
     application.add_handler(term_handler)
     application.add_handler(problem_handler)
     application.add_handler(source_handler)
@@ -136,4 +171,7 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
+
+
+
 
