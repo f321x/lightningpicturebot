@@ -25,7 +25,7 @@ violation = "Your message violated the OpenAI /terms so DALLE didn't return pict
             "violence, public figures (names) and erotic stuff. Type in /terms to read them. \n\nIf you want " \
             "uncensored image generation use Stable Diffusion for the weird stuff :D Thanks! "
 
-source = "https://github.com/exitfiat/lightningpicturebot"
+source = "https://github.com/f321x/lightningpicturebot"
 
 group = "Also there is a little group chat in which you can discuss and share your pictures and bot experience: " \
         "https://t.me/lightningpicturebotchat"
