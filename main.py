@@ -112,6 +112,7 @@ async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYP
                     await context.bot.send_photo(chat_id=chat_id, photo=open('sd_picture_' + str(chat_id) + '.png', 'rb'))
                     os.remove('sd_picture_' + str(chat_id) + '.png')
                     logging.info('sd: ' + user_state[chat_id][0])
+                    print('generating sd: ' + user_state[chat_id][0])
                     user_state.pop(chat_id)
                     break
                 except:
