@@ -28,7 +28,7 @@ violation = "Your message violated the OpenAI /terms so DALLE didn't return pict
 source = "https://github.com/exitfiat/lightningpicturebot"
 
 group = "Also there is a little group chat in which you can discuss and share your pictures and bot experience: " \
-        "https://t.me/lightningpicturebot"
+        "https://t.me/lightningpicturebotchat"
 
 offline = "Unfortunately i had to deactivate the Bot because i can't guarantee flawless function. Please come back " \
           "later "
