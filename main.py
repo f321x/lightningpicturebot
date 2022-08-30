@@ -109,8 +109,10 @@ async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYP
             for generating in range(2):
                 try:
                     stablediffusion.generate_sd_normal(user_state[chat_id][0], str(chat_id))
-                    await context.bot.send_photo(chat_id=chat_id, photo=open('sd_picture_' + str(chat_id) + '.png', 'rb'))
-                    os.remove('sd_picture_' + str(chat_id) + '.png')
+                    for guidance in range(5, 9):
+                        await context.bot.send_photo(chat_id=chat_id, photo=open('sd_picture_gd_'+ str(guidance) + "_" + str(chat_id) + '.png', 'rb'))
+                        os.remove('sd_picture_gd_'+ str(guidance) + "_" + str(chat_id) + '.png')
+                        time.sleep(1)
                     logging.info('sd: ' + user_state[chat_id][0])
                     user_state.pop(chat_id)
                     break
@@ -171,6 +173,8 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
+
+
 
 
 
