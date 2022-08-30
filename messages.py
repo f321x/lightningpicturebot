@@ -32,3 +32,6 @@ group = "Also there is a little group chat in which you can discuss and share yo
 
 offline = "Unfortunately i had to deactivate the Bot because i can't guarantee flawless function. Please come back " \
           "later "
+
+api_error = "There is a problem with the OpenAI DALLE2 API. \n\nYou can either use Stable Diffusion or try again in " \
+            "some hours. Contact @f321x for a refund. Sorry. "
