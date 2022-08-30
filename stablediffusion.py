@@ -21,6 +21,7 @@ def generate_sd_normal(prompt, chat_id):
     prompt = prompt.replace(' ', '%20')
     prompt = prompt.replace(',', '%2C')
     prompt = prompt.replace(';', '%3B')
+    prompt = prompt.replace('"', '%22')
     for guidance in range(5, 9):
         payload = "guidance=" + str(guidance) + "&steps=50&prompt=" + prompt + "&width" \
                                                                                "=512&height=512"
