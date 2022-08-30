@@ -77,7 +77,6 @@ async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             for generating in range(2):
                 try:
                     file_paths = dalle.generate_and_download(user_state[chat_id][0])
-                    print(file_paths)
                     if isinstance(file_paths, list):
                         for n in file_paths:
                             await context.bot.send_photo(chat_id=chat_id, photo=open(n, 'rb'))
