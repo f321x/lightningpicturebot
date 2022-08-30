@@ -9,7 +9,7 @@ headers = {
     'Content-type': 'application/json',
 }
 
-data = '{"out": false, "amount":1000, "memo":"dalle2bot", "unit":"sat"}'
+data = '{"out": false, "amount":1000, "memo":"lightningpicturebot", "unit":"sat"}'
 
 def getinvoice():
   response = requests.post('https://legend.lnbits.com/api/v1/payments', headers=headers, data=data)
