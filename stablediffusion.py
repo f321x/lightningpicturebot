@@ -2,6 +2,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -15,21 +16,24 @@ headers = {
     "X-RapidAPI-Host": "dezgo.p.rapidapi.com"
 }
 
+
 def generate_sd_normal(prompt, chat_id):
     prompt = prompt.replace(' ', '%20')
     prompt = prompt.replace(',', '%2C')
     prompt = prompt.replace(';', '%3B')
-    payload = "guidance=7&steps=50&prompt=" + prompt + "&width" \
-                                                       "=512&height=512"
-    response = requests.request("POST", url, data=payload, headers=headers)
-    if response.status_code == 200:
-        f = open('sd_picture_' + chat_id + '.png', 'wb')
-        f.write(response.content)
-        f.close()
-    else:
-        return None
+    for guidance in range(5, 9):
+        payload = "guidance=" + str(guidance) + "&steps=50&prompt=" + prompt + "&width" \
+                                                                               "=512&height=512"
+        response = requests.request("POST", url, data=payload, headers=headers)
+        if response.status_code == 200:
+            f = open('sd_picture_gd_' + str(guidance) + "_" + str(chat_id) + '.png', 'wb')
+            f.write(response.content)
+            f.close()
+            time.sleep(1)
+        else:
+            return None
 
-#def generate_sd_hd(prompt): (doesnt work, 504 gateway Time-out)
+# def generate_sd_hd(prompt): (doesnt work, 504 gateway Time-out)
 #    prompt = prompt.replace(' ', '%20')
 #    prompt = prompt.replace(',', '%2C')
 #    prompt = prompt.replace(';', '%3B')
