@@ -57,7 +57,8 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                      photo=open(str(update.effective_chat.id) + ".png", 'rb'))
         os.remove(str(update.effective_chat.id) + ".png")
         await context.bot.send_message(chat_id=update.effective_chat.id,
-                                       text="`lightning:" + user_state[update.effective_chat.id][1]['payment_request']+"`",
+                                       text="`lightning:" + user_state[update.effective_chat.id][1][
+                                           'payment_request'] + "`",
                                        parse_mode='MarkdownV2')
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Press \n/generate_dalle2 \nor \n "
                                                                               "/generate_stablediffusion \nonce you "
@@ -114,8 +115,9 @@ async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYP
                 try:
                     stablediffusion.generate_sd_normal(user_state[chat_id][0], str(chat_id))
                     for guidance in range(5, 9):
-                        await context.bot.send_photo(chat_id=chat_id, photo=open('sd_picture_gd_'+ str(guidance) + "_" + str(chat_id) + '.png', 'rb'))
-                        os.remove('sd_picture_gd_'+ str(guidance) + "_" + str(chat_id) + '.png')
+                        await context.bot.send_photo(chat_id=chat_id, photo=open(
+                            'sd_picture_gd_' + str(guidance) + "_" + str(chat_id) + '.png', 'rb'))
+                        os.remove('sd_picture_gd_' + str(guidance) + "_" + str(chat_id) + '.png')
                         time.sleep(1)
                     logging.info('sd: ' + user_state[chat_id][0])
                     user_state.pop(chat_id)
@@ -177,9 +179,3 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
-
-
-
-
-
-
