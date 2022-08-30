@@ -77,18 +77,15 @@ async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             for generating in range(2):
                 try:
                     file_paths = dalle.generate_and_download(user_state[chat_id][0])
+                    print(file_paths)
                     if isinstance(file_paths, list):
                         for n in file_paths:
                             await context.bot.send_photo(chat_id=chat_id, photo=open(n, 'rb'))
                             os.remove(n)
-                    elif file_paths == "rejected":
+                    else:
                         logging.info("dalle violation: " + user_state[chat_id][0])
                         await context.bot.send_message(chat_id=chat_id,
                                                        text=messages.violation)
-                    elif file_paths == "failed":
-                        logging.error("API Error OpenAI")
-                        await context.bot.send_message(chat_id=chat_id,
-                                                       text=messages.api_error)
                     user_state.pop(chat_id)
                     break
                 except:

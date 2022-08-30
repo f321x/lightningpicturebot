@@ -23,7 +23,9 @@ problem = "If you encounter any problem please contact @f321x on TG and i will r
 violation = "Your message violated the OpenAI /terms so DALLE didn't return pictures. Please try not to violate the " \
             "terms otherwise the account serving this bot will probably get banned. DALLE doesn't like politics, " \
             "violence, public figures (names) and erotic stuff. Type in /terms to read them. \n\nIf you want " \
-            "uncensored image generation use Stable Diffusion for the weird stuff :D Thanks! "
+            "uncensored image generation use Stable Diffusion for the weird stuff :D Thanks! \n\nIf this message is " \
+            "unreasonable and shows up repeatedly the DALLE API could also have some problems currently, in this case " \
+            "you should wait some hours and try again later or use Stable Diffusion instead. "
 
 source = "https://github.com/f321x/lightningpicturebot"
 
