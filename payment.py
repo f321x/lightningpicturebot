@@ -18,7 +18,7 @@ def getinvoice():
 
 
 def checkinvoice(payment_hash):
-    response = requests.get('https://legend.lnbits.com/api/v1/payments' + payment_hash, headers=headers)
+    response = requests.get('https://legend.lnbits.com/api/v1/payments/' + payment_hash, headers=headers)
     return response.json()['paid']
 
 # def refund():
