@@ -18,7 +18,7 @@ def getinvoice():
 
 
 def checkinvoice(payment_hash):
-    response = requests.get('https://192.168.0.72:5001/api/v1/payments' + payment_hash, headers=headers, verify=Flse)
+    response = requests.get('https://192.168.0.72:5001/api/v1/payments' + payment_hash, headers=headers, verify=False)
     return response.json()['paid']
 
 # def refund():
