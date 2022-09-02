@@ -49,20 +49,21 @@ async def problem(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_state[update.effective_chat.id] = [update.message.text, payment.getinvoice()]
-    img = qrcode.make("lightning:" + user_state[update.effective_chat.id][1]['payment_request'])
-    img.save(str(update.effective_chat.id) + ".png")
+    chat_id = update.effective_chat.id
+    user_state[chat_id] = [update.message.text, payment.getinvoice()]
+    img = qrcode.make("lightning:" + user_state[chat_id][1]['payment_request'])
+    img.save(str(chat_id) + ".png")
     try:
-        await context.bot.send_photo(chat_id=update.effective_chat.id,
-                                     photo=open(str(update.effective_chat.id) + ".png", 'rb'))
-        os.remove(str(update.effective_chat.id) + ".png")
-        await context.bot.send_message(chat_id=update.effective_chat.id,
-                                       text="`lightning:" + user_state[update.effective_chat.id][1][
+        await context.bot.send_photo(chat_id=chat_id,
+                                     photo=open(str(chat_id) + ".png", 'rb'))
+        os.remove(str(chat_id) + ".png")
+        await context.bot.send_message(chat_id=chat_id,
+                                       text="`lightning:" + user_state[chat_id][1][
                                            'payment_request'] + "`",
                                        parse_mode='MarkdownV2')
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Press \n/generate_dalle2 \nor \n "
-                                                                              "/generate_stablediffusion \nonce you "
-                                                                              "paid the invoice")
+        await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
+                                                             "/generate_stablediffusion \nonce you "
+                                                             "paid the invoice")
     except:
         logging.error("Answer to command failed")
         print("Answer to command failed")
@@ -81,16 +82,21 @@ async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         for n in file_paths:
                             await context.bot.send_photo(chat_id=chat_id, photo=open(n, 'rb'))
                             os.remove(n)
+                        user_state.pop(chat_id)
                     elif file_paths == "violation":
                         logging.info("dalle violation: " + user_state[chat_id][0])
                         await context.bot.send_message(chat_id=chat_id,
                                                        text=messages.violation)
+                        user_state.pop(chat_id)
                     elif file_paths == "failure":
                         logging.error(user_state[chat_id][0])
                         await context.bot.send_message(chat_id=chat_id,
                                                        text="This request failed due to some problems with the DALLE2 "
-                                                            "API, please click /problem")
-                    user_state.pop(chat_id)
+                                                            "API.")
+                        await context.bot.send_message(chat_id=chat_id,
+                                                       text="You can try again or use /refund Invoice with a 1000 "
+                                                            "Satoshi invoice to get a refund.")
+                        user_state[chat_id][2] = True
                     break
                 except:
                     logging.error(user_state[chat_id][0])
@@ -145,6 +151,29 @@ async def source(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.source)
 
 
+async def refund(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    try:
+        if user_state[chat_id][2] != True:
+            await context.bot.send_message(chat_id=chat_id, text="You are not supposed to get a refund, if you are and "
+                                                                 "this is an error contact @f321x")
+        elif user_state[chat_id][2] == True:
+            await context.bot.send_message(chat_id=chat_id, text="Trying to refund...")
+            refund = payment.refund(update.message.text)
+            if refund == "success":
+                user_state.pop(chat_id)
+                await context.bot.send_message(chat_id=chat_id, text="Refund successful!")
+            elif refund == "wrong":
+                await context.bot.send_message(chat_id=chat_id, text="Your invoice is invalid, please try again with a "
+                                                                     "1000 Satoshi invoice.")
+            elif refund == "error":
+                await context.bot.send_message(chat_id=chat_id, text="Refunding failed, please try again with an invoice "
+                                                                     "from another Wallet")
+    except:
+        await context.bot.send_message(chat_id=chat_id, text="You are not supposed to get a refund, if you are and "
+                                                             "this is an error contact @f321x")
+        logging.info("!!! Somebody tried to refund without True")
+
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="Sorry, I didn't understand that command. Please try /start or /help")
@@ -163,6 +192,7 @@ if __name__ == '__main__':
     term_handler = CommandHandler('terms', terms)
     problem_handler = CommandHandler('problem', problem)
     source_handler = CommandHandler('source', source)
+    refund_handler = CommandHandler('refund', refund)
 
     # enable handlers
     application.add_handler(start_handler)
@@ -173,11 +203,11 @@ if __name__ == '__main__':
     application.add_handler(term_handler)
     application.add_handler(problem_handler)
     application.add_handler(source_handler)
+    application.add_handler(refund_handler)
 
     # unknown handler
     unknown_handler = MessageHandler(filters.COMMAND, unknown)
     application.add_handler(unknown_handler)
 
     # run telegram bot
-    #application.run_polling()
-
+    application.run_polling()
