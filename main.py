@@ -159,7 +159,7 @@ async def refund(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                                                  "this is an error contact @f321x")
         elif user_state[chat_id][2] == True:
             await context.bot.send_message(chat_id=chat_id, text="Trying to refund...")
-            refund = payment.refund(update.message.text)
+            refund = payment.refund(update.message.text[7:])
             if refund == "success":
                 user_state.pop(chat_id)
                 await context.bot.send_message(chat_id=chat_id, text="Refund successful!")
