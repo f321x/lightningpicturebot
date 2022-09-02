@@ -86,6 +86,7 @@ async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         await context.bot.send_message(chat_id=chat_id,
                                                        text=messages.violation)
                     elif file_paths == "failure":
+                        logging.error(user_state[chat_id][0])
                         await context.bot.send_message(chat_id=chat_id,
                                                        text="This request failed due to some problems with the DALLE2 "
                                                             "API, please click /problem")
@@ -178,4 +179,5 @@ if __name__ == '__main__':
     application.add_handler(unknown_handler)
 
     # run telegram bot
-    application.run_polling()
+    #application.run_polling()
+
