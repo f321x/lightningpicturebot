@@ -81,14 +81,10 @@ async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         for n in file_paths:
                             await context.bot.send_photo(chat_id=chat_id, photo=open(n, 'rb'))
                             os.remove(n)
-                    elif file_paths == "violation":
+                    else:
                         logging.info("dalle violation: " + user_state[chat_id][0])
                         await context.bot.send_message(chat_id=chat_id,
                                                        text=messages.violation)
-                    elif file_paths == "failure":
-                        await context.bot.send_message(chat_id=chat_id,
-                                                       text="This request failed due to some problems with the DALLE2 "
-                                                            "API, please click /problem")
                     user_state.pop(chat_id)
                     break
                 except:
