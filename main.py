@@ -165,10 +165,11 @@ async def refund(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_message(chat_id=chat_id, text="Refund successful!")
             elif refund == "wrong":
                 await context.bot.send_message(chat_id=chat_id, text="Your invoice is invalid, please try again with a "
-                                                                     "1000 Satoshi invoice.")
+                                                                     "1000 Satoshi invoice. Use the format /refund "
+                                                                     "bolt11Invoice")
             elif refund == "error":
-                await context.bot.send_message(chat_id=chat_id, text="Refunding failed, please try again with an invoice "
-                                                                     "from another Wallet")
+                await context.bot.send_message(chat_id=chat_id, text="Refunding failed, please try again with an "
+                                                                     "invoice from another Wallet")
     except:
         await context.bot.send_message(chat_id=chat_id, text="You are not supposed to get a refund, if you are and "
                                                              "this is an error contact @f321x")
