@@ -50,7 +50,7 @@ async def problem(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
-    user_state[chat_id] = [update.message.text, payment.getinvoice()]
+    user_state[chat_id] = [update.message.text, payment.getinvoice(), False]
     img = qrcode.make("lightning:" + user_state[chat_id][1]['payment_request'])
     img.save(str(chat_id) + ".png")
     try:
@@ -157,6 +157,7 @@ async def refund(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if user_state[chat_id][2] != True:
             await context.bot.send_message(chat_id=chat_id, text="You are not supposed to get a refund, if you are and "
                                                                  "this is an error contact @f321x")
+            logging.info("!!! Somebody tried to refund without True")
         elif user_state[chat_id][2] == True:
             await context.bot.send_message(chat_id=chat_id, text="Trying to refund...")
             refund = payment.refund(update.message.text[7:])
