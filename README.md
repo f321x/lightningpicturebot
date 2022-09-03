@@ -22,5 +22,7 @@ Functions:
 * payments and refunding with LNbits
 * logging
 
+Tested with Phoenix Wallet (https://phoenix.acinq.co/)
+
 If i provided some value to you with this software feel free to tip some Satoshis to: https://legend.lnbits.com/tipjar/354
 
