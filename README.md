@@ -15,7 +15,7 @@ Dependencies:
 * requests
 * python-dotenv
 
-The dalle2.py file is a modified from ezzcodeezzlife/dalle2-in-python
+The dalle2.py file is a modified version of the ezzcodeezzlife/dalle2-in-python module
 
 Functions:
 * multiple AIs
