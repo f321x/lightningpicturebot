@@ -176,6 +176,20 @@ async def refund(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                                              "this is an error contact @f321x")
         logging.info("!!! Somebody tried to refund without True")
 
+
+async def logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    logging.info("!!! Somebody used /logs !!!")
+    if update.message.text[6:] == os.environ['log_pw']:
+        log_file = open('mylog.log', 'rb')
+        await context.bot.send_document(chat_id, log_file)
+        log_file.close()
+    else:
+        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                       text="Sorry, I didn't understand that command. Please try /start or /help")
+        time.sleep(3)
+
+
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="Sorry, I didn't understand that command. Please try /start or /help")
@@ -195,6 +209,7 @@ if __name__ == '__main__':
     problem_handler = CommandHandler('problem', problem)
     source_handler = CommandHandler('source', source)
     refund_handler = CommandHandler('refund', refund)
+    log_handler = CommandHandler('logs', logs)
 
     # enable handlers
     application.add_handler(start_handler)
@@ -206,6 +221,7 @@ if __name__ == '__main__':
     application.add_handler(problem_handler)
     application.add_handler(source_handler)
     application.add_handler(refund_handler)
+    application.add_handler(log_handler)
 
     # unknown handler
     unknown_handler = MessageHandler(filters.COMMAND, unknown)
