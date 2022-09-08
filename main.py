@@ -130,7 +130,7 @@ async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYP
                     user_state.pop(chat_id)
                     break
                 except:
-                    logging.error(user_state[chat_id][0])
+                    logging.error("sd error: " + user_state[chat_id][0])
                     await context.bot.send_message(chat_id=chat_id,
                                                    text="Failed, trying again. If it doesn't give you pictures in a "
                                                         "minute click /problem")
