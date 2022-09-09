@@ -19,7 +19,10 @@ headers = {
 def find_seed(prompt):
     for n in prompt:
         if n == "/":
-            return "&seed=" + prompt[prompt.index("/")+1:]
+            if prompt[prompt.index("/")+1:].isdigit():
+                return "&seed=" + prompt[prompt.index("/")+1:]
+            else:
+                return ""
         else:
             pass
     return ""
@@ -49,15 +52,3 @@ def generate_sd_normal(prompt, chat_id):
             time.sleep(1)
         else:
             return None
-
-# def generate_sd_hd(prompt): (doesnt work, 504 gateway Time-out)
-#    prompt = prompt.replace(' ', '%20')
-#    prompt = prompt.replace(',', '%2C')
-#    prompt = prompt.replace(';', '%3B')
-#    payload = "guidance=7&steps=100&prompt=" + prompt + "&width=1024&height=1024"
-#    response = requests.request("POST", url, data=payload, headers=headers, timeout=None)
-#    print(response.content)
-#    print(response.status_code)
-#    f = open('sd_picture_hd.png', 'wb')
-#    f.write(response.content)
-#    f.close()
