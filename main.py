@@ -15,7 +15,7 @@ load_dotenv()
 
 # logging configuration
 logging.basicConfig(
-    filename="mylog.log",
+    filename="mylog.txt",
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
@@ -181,7 +181,7 @@ async def logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     logging.info("!!! Somebody used /logs !!!")
     if update.message.text[6:] == os.environ['log_pw']:
-        log_file = open('mylog.log', 'rb')
+        log_file = open('mylog.txt', 'rb')
         await context.bot.send_document(chat_id, log_file)
         log_file.close()
     else:
