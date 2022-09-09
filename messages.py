@@ -2,13 +2,14 @@
 
 start = "Welcome to the Lightning picture bot by @f321x ! \n\nThis bot supports DALLE2 (censored) and Stable Diffusion (" \
         "uncensored). \n\nI charge 1000 satoshi to pay for the picture generation and the server this bot is running on. " \
-        "\n\nIf you need help press /help, otherwise have fun!!! "
+        "\n\nFor more information press /help, otherwise have fun!!! "
 
 todo = "You can now type in the image description you want to pass to the AI:"
 
 help = "Type in a command for the AI like the examples you can find in the group chat, then pay the " \
        "Lightning invoice with a Lightning enabled Bitcoin wallet like Blixt Wallet or Phoenix Wallet (easy), " \
-       "then the Bot will send you the generated Pictures after some time (minutes).\n\nIf you have problems contact me " \
+       "then the Bot will send you the generated Pictures after some time (minutes). You can set the seed for Stable " \
+       "Diffusion by appending /yourseed to the end of the prompt.\n\nIf you have problems contact me " \
        "on Telegram @f321x or read the source code of this Bot on github to understand how it works.\n\nIf you " \
        "encounter any problems or didn't get a result press /problem .\n\nPress /source to see the source code of the " \
        "bot.\n\nAlso don't use Bluewallet with the standard node as they have liquidity problems which will cause " \
