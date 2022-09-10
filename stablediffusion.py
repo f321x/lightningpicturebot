@@ -60,5 +60,3 @@ def generate_sd_normal(prompt, chat_id):
         else:
             return None
 
-print(len("1764438642"))
-
