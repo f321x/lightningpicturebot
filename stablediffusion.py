@@ -20,9 +20,12 @@ def find_seed(prompt):
     for n in prompt:
         if n == "/":
             if prompt[prompt.index("/")+1:].isdigit():
-                return "&seed=" + prompt[prompt.index("/")+1:]
+                if len(prompt[prompt.index("/")+1:].isdigit()) < 10:
+                    return "&seed=" + prompt[prompt.index("/")+1:]
+                else:
+                    return "seed_too_long"
             else:
-                return ""
+                return "seed_no_int"
         else:
             pass
     return ""
@@ -37,6 +40,10 @@ def seed_remover(prompt):
 
 def generate_sd_normal(prompt, chat_id):
     seed = find_seed(prompt)
+    if seed == "seed_too_long":
+        seed = ""
+    elif seed == "seed_no_int":
+        seed = ""
     prompt = seed_remover(prompt)
     prompt = prompt.replace(' ', '%20')
     prompt = prompt.replace(',', '%2C')
@@ -52,3 +59,6 @@ def generate_sd_normal(prompt, chat_id):
             time.sleep(1)
         else:
             return None
+
+print(len("1764438642"))
+
