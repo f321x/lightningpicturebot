@@ -20,7 +20,7 @@ def find_seed(prompt):
     for n in prompt:
         if n == "/":
             if prompt[prompt.index("/")+1:].isdigit():
-                if len(prompt[prompt.index("/")+1:]) < 11:
+                if int(prompt[prompt.index("/")+1:]) < 2147483648:
                     return "&seed=" + prompt[prompt.index("/")+1:]
                 else:
                     return "seed_too_long"

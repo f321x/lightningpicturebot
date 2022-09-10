@@ -9,7 +9,7 @@ todo = "You can now type in the image description you want to pass to the AI:"
 help = "Type in a command for the AI like the examples you can find in the group chat, then pay the " \
        "Lightning invoice with a Lightning enabled Bitcoin wallet like Blixt Wallet or Phoenix Wallet (easy), " \
        "then the Bot will send you the generated Pictures after some time (minutes). You can set the seed for Stable " \
-       "Diffusion by appending /yourseed to the end of the prompt. The Seed has to be a number and max 10 " \
+       "Diffusion by appending /yourseed to the end of the prompt. The Seed has to be a number and max 9 " \
        "digits.\n\nIf you have " \
        "problems contact me on Telegram @f321x or read the source code of this Bot on github to understand how it " \
        "works.\n\nIf you " \

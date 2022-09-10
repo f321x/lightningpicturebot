@@ -121,7 +121,7 @@ async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYP
             for generating in range(2):
                 if stablediffusion.find_seed(user_state[chat_id][0]) == "seed_too_long":
                     await context.bot.send_message(chat_id=chat_id,
-                                                   text="Seed too long, use max. 10 digits, generating without seed "
+                                                   text="Seed too long, use max. 9 digits, generating without seed "
                                                         "now.")
                 elif stablediffusion.find_seed(user_state[chat_id][0]) == "seed_no_int":
                     await context.bot.send_message(chat_id=chat_id,
