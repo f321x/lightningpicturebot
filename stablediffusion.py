@@ -49,7 +49,7 @@ def generate_sd_normal(prompt, chat_id):
     prompt = prompt.replace(',', '%2C')
     prompt = prompt.replace(';', '%3B')
     prompt = prompt.replace('"', '%22')
-    for guidance in range(5, 9):
+    for guidance in range(7, 11):
         payload = "guidance=" + str(guidance) + "&steps=50&prompt=" + prompt + "&width=512&height=512" + seed
         response = requests.request("POST", url, data=payload, headers=headers)
         if response.status_code == 200:

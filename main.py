@@ -236,3 +236,4 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
+
