@@ -169,7 +169,7 @@ async def refund(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logging.info("!!! Somebody tried to refund without True")
         elif user_state[chat_id][2] == True:
             await context.bot.send_message(chat_id=chat_id, text="Trying to refund...")
-            refund = payment.refund(update.message.text[7:])
+            refund = payment.refund(update.message.text[8:])
             if refund == "success":
                 user_state.pop(chat_id)
                 await context.bot.send_message(chat_id=chat_id, text="Refund successful!")
@@ -239,6 +239,5 @@ if __name__ == '__main__':
     # run telegram bot
     application.run_polling()
 
-#print(nostr1.gen_key())
-#print(nostr1.receive())
+
 
