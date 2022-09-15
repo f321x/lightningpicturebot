@@ -96,7 +96,7 @@ async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                                        text="This request failed due to some problems with the DALLE2 "
                                                             "API.")
                         await context.bot.send_message(chat_id=chat_id,
-                                                       text="You can try again or use /refund Invoice with a 1000 "
+                                                       text="You can use /refund lnbc...(invoice) with a 1000 "
                                                             "Satoshi invoice to get a refund.")
                         user_state[chat_id][2] = True
                     break
@@ -139,11 +139,21 @@ async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYP
                     user_state.pop(chat_id)
                     break
                 except:
-                    logging.error("sd error: " + user_state[chat_id][0])
-                    await context.bot.send_message(chat_id=chat_id,
-                                                   text="Failed, trying again. If it doesn't give you pictures in a "
-                                                        "minute click /problem")
-                    time.sleep(15)
+                    if generating == 0:
+                        logging.error("sd error: " + user_state[chat_id][0])
+                        await context.bot.send_message(chat_id=chat_id,
+                                                       text="Failed, trying again. If it doesn't give you pictures in a "
+                                                            "minute click /problem")
+                        time.sleep(15)
+                    elif generating == 1:
+                        logging.error(user_state[chat_id][0])
+                        await context.bot.send_message(chat_id=chat_id,
+                                                       text="This request failed due to some problems with the SD "
+                                                            "API.")
+                        await context.bot.send_message(chat_id=chat_id,
+                                                       text="You can use /refund lnbc...(invoice) with a 1000 "
+                                                            "Satoshi invoice to get a refund.")
+                        user_state[chat_id][2] = True
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id,
                                            text="You haven't paid, press \n/generate_stablediffusion again once you "
@@ -238,6 +248,6 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
-#
+
 
 
