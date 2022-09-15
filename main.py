@@ -10,7 +10,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Messa
 from dotenv import load_dotenv
 import qrcode
 import time
-import nostr1
+#import nostr1
 
 
 load_dotenv()
