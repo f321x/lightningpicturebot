@@ -10,6 +10,8 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Messa
 from dotenv import load_dotenv
 import qrcode
 import time
+import nostr1
+
 
 load_dotenv()
 
@@ -128,7 +130,7 @@ async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYP
                                                    text="Seed no integer (number), generating without seed now.")
                 try:
                     stablediffusion.generate_sd_normal(user_state[chat_id][0], str(chat_id))
-                    for guidance in range(5, 9):
+                    for guidance in range(7, 11):
                         await context.bot.send_photo(chat_id=chat_id, photo=open(
                             'sd_picture_gd_' + str(guidance) + "_" + str(chat_id) + '.png', 'rb'))
                         os.remove('sd_picture_gd_' + str(guidance) + "_" + str(chat_id) + '.png')
@@ -236,4 +238,7 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
+
+#print(nostr1.gen_key())
+#print(nostr1.receive())
 
