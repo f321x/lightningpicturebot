@@ -40,3 +40,5 @@ offline = "Unfortunately i had to deactivate the Bot because i can't guarantee f
 
 api_error = "There is a problem with the OpenAI DALLE2 API. \n\nIf this error shows up multiple times you can either " \
             "use Stable Diffusion or try again in some hours. Contact @f321x for a refund. "
+
+start_nostr = "Welcome to the Lightningpicturebot! This bot can generate images from prompts with the help of OpenAI's DALLE2 AI. To get started just type in your prompt with /p. For example: /p yellow duck with sunglasses."

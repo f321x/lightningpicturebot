@@ -10,7 +10,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Messa
 from dotenv import load_dotenv
 import qrcode
 import time
-#import nostr1
+import nostr1
 
 load_dotenv()
 
@@ -246,7 +246,8 @@ if __name__ == '__main__':
     application.add_handler(unknown_handler)
 
     # run telegram bot
-    application.run_polling()
+    #application.run_polling()
 
-
+nostr1.connect()
+nostr1.nostr_dalle()
 
