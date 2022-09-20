@@ -2,7 +2,7 @@
 
 Available at https://t.me/dalle2lightningbot
 
-A telegram bot for AI Image generation with Bitcoin payments via the Lightning Network
+A telegram and Nostr bot for AI Image generation with Bitcoin payments via the Lightning Network
 
 Currently supports Stable Diffusion and DALLE 2
 
@@ -14,15 +14,17 @@ Dependencies:
 * qrcode
 * requests
 * python-dotenv
+* jeffthibault/python-nostr
 
 The dalle2.py file is a modified version of the ezzcodeezzlife/dalle2-in-python module
 
 Functions:
-* multiple AIs
+* multiple AIs (DALLE2 and Stable Diffusion)
 * payments and refunding with LNbits
 * logging
+* multiple chat protocols (Nostr and Telegram)
 
 Tested with Phoenix Wallet (https://phoenix.acinq.co/)
 
-If i provided some value to you with this software feel free to tip some Satoshis to: https://legend.lnbits.com/tipjar/354
+If i provided some value to you with this software feel free to tip some Satoshis to: x@lnaddress.com
 
