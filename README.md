@@ -2,7 +2,7 @@
 
 Available at https://t.me/dalle2lightningbot
 
-A telegram and Nostr bot for AI Image generation with Bitcoin payments via the Lightning Network
+A Telegram and Nostr bot for AI Image generation with Bitcoin payments via the Lightning Network
 
 Currently supports Stable Diffusion and DALLE 2
 
