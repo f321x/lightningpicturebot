@@ -11,8 +11,6 @@ from dotenv import load_dotenv
 import qrcode
 import time
 
-
-
 load_dotenv()
 
 # logging configuration
