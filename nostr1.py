@@ -52,7 +52,7 @@ def nostr_dalle():
                 current_prompt = event_msg.event.content[3:]
                 user_state_nostr[current_prompt] = payment.getinvoice()
                 time.sleep(1)
-                event = Event(public_key, str("https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + user_state_nostr[current_prompt]['payment_request']), kind=42,
+                event = Event(public_key, str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + user_state_nostr[current_prompt]['payment_request'] + "&format=jpeg"), kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                 event.sign(private_key)
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
