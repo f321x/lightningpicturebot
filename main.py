@@ -50,45 +50,23 @@ async def problem(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
-    if chat_id == os.environ['tg_group_id']:
-        if update.message.text[0:3] != "/p ":
-            pass
-        else:
-            user_state[chat_id] = [update.message.text[3:], payment.getinvoice(), False]
-            img = qrcode.make("lightning:" + user_state[chat_id][1]['payment_request'])
-            img.save(str(chat_id) + ".png")
-            try:
-                await context.bot.send_photo(chat_id=chat_id,
-                                             photo=open(str(chat_id) + ".png", 'rb'))
-                os.remove(str(chat_id) + ".png")
-                await context.bot.send_message(chat_id=chat_id,
-                                               text="`lightning:" + user_state[chat_id][1][
-                                                   'payment_request'] + "`",
-                                               parse_mode='MarkdownV2')
-                await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
-                                                                     "/generate_stablediffusion \nonce you "
-                                                                     "paid the invoice")
-            except:
-                logging.error("Answer to command failed")
-                print("Answer to command failed")
-    else:
-        user_state[chat_id] = [update.message.text, payment.getinvoice(), False]
-        img = qrcode.make("lightning:" + user_state[chat_id][1]['payment_request'])
-        img.save(str(chat_id) + ".png")
-        try:
-            await context.bot.send_photo(chat_id=chat_id,
-                                         photo=open(str(chat_id) + ".png", 'rb'))
-            os.remove(str(chat_id) + ".png")
-            await context.bot.send_message(chat_id=chat_id,
-                                           text="`lightning:" + user_state[chat_id][1][
-                                               'payment_request'] + "`",
-                                           parse_mode='MarkdownV2')
-            await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
-                                                                 "/generate_stablediffusion \nonce you "
-                                                                 "paid the invoice")
-        except:
-            logging.error("Answer to command failed")
-            print("Answer to command failed")
+    user_state[chat_id] = [update.message.text, payment.getinvoice(), False]
+    img = qrcode.make("lightning:" + user_state[chat_id][1]['payment_request'])
+    img.save(str(chat_id) + ".png")
+    try:
+        await context.bot.send_photo(chat_id=chat_id,
+                                     photo=open(str(chat_id) + ".png", 'rb'))
+        os.remove(str(chat_id) + ".png")
+        await context.bot.send_message(chat_id=chat_id,
+                                       text="`lightning:" + user_state[chat_id][1][
+                                           'payment_request'] + "`",
+                                       parse_mode='MarkdownV2')
+        await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
+                                                             "/generate_stablediffusion \nonce you "
+                                                             "paid the invoice")
+    except:
+        logging.error("Answer to command failed")
+        print("Answer to command failed")
 
 
 async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
