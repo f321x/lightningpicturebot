@@ -48,17 +48,22 @@ def nostr_dalle():
             relay_manager.publish_message(message)
             event_msg = relay_manager.message_pool.get_event()
             if event_msg.event.content[0:3] == "/p ":
+                connect()
                 current_prompt = event_msg.event.content[3:]
                 user_state_nostr[current_prompt] = payment.getinvoice()
                 time.sleep(1)
+                event = Event(public_key, str("https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + user_state_nostr[current_prompt]['payment_request']), kind=42,
+                              tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
+                event.sign(private_key)
+                message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                relay_manager.publish_message(message_2)
+                time.sleep(2)  # allow the messages to send
                 event = Event(public_key, str(user_state_nostr[current_prompt]['payment_request']), kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                 event.sign(private_key)
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                 relay_manager.publish_message(message_2)
                 time.sleep(2)  # allow the messages to send
-                connect()
-                time.sleep(1)
                 event = Event(public_key, "Send /g once you paid the invoice to start generating", kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                 event.sign(private_key)
