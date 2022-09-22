@@ -130,6 +130,5 @@ def dalle_generate(prompt):
         relay_manager.publish_message(message_2)
         time.sleep(1)  # allow the messages to send
 
-
 connect()
 nostr_dalle()
