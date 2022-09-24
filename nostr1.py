@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 from dalle2 import Dalle2
 import logging
 from rclone.rclone import Rclone
+import stablediffusion
 
 rc = Rclone()
 
@@ -67,7 +68,7 @@ def nostr_dalle():
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                 relay_manager.publish_message(message_2)
                 time.sleep(2)  # allow the messages to send
-                event = Event(public_key, "Send /g once you paid the invoice to start generating", kind=42,
+                event = Event(public_key, "Send /gd (DALLE2) or /gsd (Stable Diffusion) once you paid the invoice to start generating", kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                 event.sign(private_key)
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
@@ -81,13 +82,27 @@ def nostr_dalle():
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                 relay_manager.publish_message(message_2)
                 time.sleep(1)  # allow the messages to send
-            elif event_msg.event.content == "/g":
+            elif event_msg.event.content == "/gd":
                 time.sleep(1)
                 if payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']):
                     dalle_generate(current_prompt)
                     current_prompt = ""
                 elif payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']) != True:
-                    event = Event(public_key, "You havent paid yet, send /g again once you paid or give a new prompt with /p", kind=42,
+                    event = Event(public_key, "You havent paid yet, send /gd again once you paid or give a new prompt with /p", kind=42,
+                                  tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
+                    event.sign(private_key)
+                    message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                    relay_manager.publish_message(message_2)
+                    time.sleep(1)  # allow the messages to send
+            elif event_msg.event.content == "/gsd":
+                time.sleep(1)
+                if payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']):
+                    sd_generate(current_prompt)
+                    current_prompt = ""
+                elif payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']) != True:
+                    event = Event(public_key,
+                                  "You havent paid yet, send /gsd again once you paid or give a new prompt with /p",
+                                  kind=42,
                                   tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
@@ -132,6 +147,60 @@ def dalle_generate(prompt):
             time.sleep(1)  # allow the messages to send
         rc.execute('delete --min-age 12d dropbox:lpb')
         time.sleep(1)  # allow the messages to send
+
+def sd_generate(prompt):
+    id = str(int(time.time()))
+    connect()
+    for generating in range(2):
+        if stablediffusion.find_seed(prompt) == "seed_too_long":
+            event = Event(public_key, "Seed too long, use max. 9 digits, generating without seed now.", kind=42,
+                          tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
+            event.sign(private_key)
+            message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+            relay_manager.publish_message(message_2)
+            time.sleep(1)
+        elif stablediffusion.find_seed(prompt) == "seed_no_int":
+            event = Event(public_key, "Seed not an integer (number), generating without seed now.", kind=42,
+                          tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
+            event.sign(private_key)
+            message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+            relay_manager.publish_message(message_2)
+            time.sleep(1)
+        try:
+            stablediffusion.generate_sd_normal(prompt, id)
+            for guidance in range(7, 11):
+                rc.copy('sd_picture_gd_' + str(guidance) + "_" + id + '.png', 'dropbox:lpb')
+                os.remove('sd_picture_gd_' + str(guidance) + "_" + id + '.png')
+                link = list(rc.link('dropbox:lpb/' + 'sd_picture_gd_' + str(guidance) + "_" + id + '.png'))
+                link[-2] = '1'
+                event = Event(public_key, ''.join(link), kind=42,
+                              tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
+                event.sign(private_key)
+                message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                relay_manager.publish_message(message_2)
+                time.sleep(1)
+            logging.info('nostr sd: ' + prompt)
+            rc.execute('delete --min-age 12d dropbox:lpb')
+            break
+        except:
+            if generating == 0:
+                logging.error("nostr sd error: " + prompt)
+                event = Event(public_key, "Failed, trying again. If it doesn't give you pictures in a minute click "
+                                          "/problem", kind=42, tags=[["e", os.environ['nostr_chat_id']]],
+                              created_at=int(time.time()))
+                event.sign(private_key)
+                message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                relay_manager.publish_message(message_2)
+                time.sleep(15)
+            elif generating == 1:
+                logging.error("nostr sd error: " + prompt)
+                event = Event(public_key, "Failed, trying again. If it doesn't give you pictures in a minute click "
+                                          "/problem", kind=42, tags=[["e", os.environ['nostr_chat_id']]],
+                              created_at=int(time.time()))
+                event.sign(private_key)
+                message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                relay_manager.publish_message(message_2)
+                time.sleep(15)
 
 connect()
 nostr_dalle()
