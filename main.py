@@ -10,6 +10,10 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Messa
 from dotenv import load_dotenv
 import qrcode
 import time
+from rclone.rclone import Rclone
+
+rc = Rclone()
+
 
 load_dotenv()
 
@@ -271,5 +275,4 @@ if __name__ == '__main__':
 
     # run telegram bot
     application.run_polling()
-
 

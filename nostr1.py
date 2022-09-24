@@ -12,6 +12,9 @@ from nostr.message_type import ClientMessageType
 from dotenv import load_dotenv
 from dalle2 import Dalle2
 import logging
+from rclone.rclone import Rclone
+
+rc = Rclone()
 
 dalle = Dalle2(os.environ['openai_token'])
 
@@ -95,7 +98,7 @@ def nostr_dalle():
             connect()
 
 def dalle_generate(prompt):
-    generations = dalle.generate(str(prompt))
+    generations = dalle.generate_and_download(str(prompt))
     if generations == "violation":
         logging.info("nostr dalle violation: " + prompt)
         event = Event(public_key, "Your prompt violated the OpenAI terms so it got blocked by them. Try to avoid controversial stuff or use Stable Diffusion on my TG Bot t.me/dalle2lightningbot", kind=42,
@@ -117,18 +120,19 @@ def dalle_generate(prompt):
     else:
         connect()
         for n in generations:
-            event = Event(public_key, n['generation']['image_path'], kind=42,
+            rc.copy(n, 'dropbox:lpb')
+            os.remove(n)
+            link = list(rc.link('dropbox:lpb/' + n[29:]))
+            link[-2] = '1'
+            event = Event(public_key, ''.join(link), kind=42,
                           tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
             event.sign(private_key)
             message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
             relay_manager.publish_message(message_2)
             time.sleep(1)  # allow the messages to send
-        event = Event(public_key, "Download the pictures you like, the links work only a short time.", kind=42,
-                      tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
-        event.sign(private_key)
-        message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
-        relay_manager.publish_message(message_2)
+        rc.execute('delete --min-age 12d dropbox:lpb')
         time.sleep(1)  # allow the messages to send
 
 connect()
 nostr_dalle()
+
