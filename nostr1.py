@@ -1,3 +1,4 @@
+#needs rclone set up with dropbox, running
 import os
 import ssl
 import time
@@ -145,7 +146,7 @@ def dalle_generate(prompt):
             message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
             relay_manager.publish_message(message_2)
             time.sleep(1)  # allow the messages to send
-        rc.execute('delete --min-age 12d dropbox:lpb')
+        rc.execute('delete --min-age 90d dropbox:lpb')
         time.sleep(1)  # allow the messages to send
 
 def sd_generate(prompt):
@@ -180,7 +181,7 @@ def sd_generate(prompt):
                 relay_manager.publish_message(message_2)
                 time.sleep(1)
             logging.info('nostr sd: ' + prompt)
-            rc.execute('delete --min-age 12d dropbox:lpb')
+            rc.execute('delete --min-age 90d dropbox:lpb')
             break
         except:
             if generating == 0:
