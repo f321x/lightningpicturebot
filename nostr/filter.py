@@ -39,7 +39,7 @@ class Filter:
                     return False
                 for e_tag in event.tags:
                     if e_tag[1] not in f_tag_values:
-                        return False
+                        return True
         
         return True
 
