@@ -235,8 +235,11 @@ async def logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id,
-                                   text="Sorry, I didn't understand that command. Please try /start or /help")
+    if str(update.effective_chat.id) == str(os.environ['tg_group_id']):
+        pass
+    else:
+        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                       text="Sorry, I didn't understand that command. Please try /start or /help")
 
 
 if __name__ == '__main__':
