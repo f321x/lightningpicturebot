@@ -58,6 +58,7 @@ def nostr_dalle():
             time.sleep(1.25)
             event_msg = relay_manager.message_pool.get_event()
             if event_msg.event.content[0:3] == "/p ":
+                connect()
                 current_prompt = event_msg.event.content[3:]
                 user_state_nostr[current_prompt] = payment.getinvoice()
                 event = Event(public_key, str("https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=" + user_state_nostr[current_prompt]['payment_request'] + ".png"), kind=42,
@@ -65,13 +66,13 @@ def nostr_dalle():
                 event.sign(private_key)
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                 relay_manager.publish_message(message_2)
-                time.sleep(1.25)  # allow the messages to send
+                time.sleep(2)  # allow the messages to send
                 event = Event(public_key, str(user_state_nostr[current_prompt]['payment_request']), kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                 event.sign(private_key)
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                 relay_manager.publish_message(message_2)
-                time.sleep(1.25)  # allow the messages to send
+                time.sleep(2)  # allow the messages to send
                 event = Event(public_key, "Send /gd (DALLE2) or /gsd (Stable Diffusion) once you paid the invoice to start generating", kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                 event.sign(private_key)
@@ -84,7 +85,7 @@ def nostr_dalle():
                 event.sign(private_key)
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                 relay_manager.publish_message(message_2)
-                time.sleep(1.25)  # allow the messages to send
+                time.sleep(1)  # allow the messages to send
             elif event_msg.event.content == "/gd":
                 if payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']):
                     dalle_generate(current_prompt)
@@ -95,7 +96,7 @@ def nostr_dalle():
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                     relay_manager.publish_message(message_2)
-                    time.sleep(1.25)  # allow the messages to send
+                    time.sleep(1)  # allow the messages to send
             elif event_msg.event.content == "/gsd":
                 if payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']):
                     sd_generate(current_prompt)
@@ -108,7 +109,7 @@ def nostr_dalle():
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                     relay_manager.publish_message(message_2)
-                    time.sleep(1.25)  # allow the messages to send
+                    time.sleep(1)  # allow the messages to send
             time.sleep(1)
         except:
             connect()
