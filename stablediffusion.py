@@ -3,6 +3,7 @@ import os
 import requests
 from dotenv import load_dotenv
 import time
+import urllib.parse
 
 load_dotenv()
 
@@ -45,10 +46,7 @@ def generate_sd_normal(prompt, chat_id):
     elif seed == "seed_no_int":
         seed = ""
     prompt = seed_remover(prompt)
-    prompt = prompt.replace(' ', '%20')
-    prompt = prompt.replace(',', '%2C')
-    prompt = prompt.replace(';', '%3B')
-    prompt = prompt.replace('"', '%22')
+    prompt = urllib.parse.quote(prompt)
     for guidance in range(7, 11):
         payload = "guidance=" + str(guidance) + "&steps=50&prompt=" + prompt + "&width=512&height=512" + seed
         response = requests.request("POST", url, data=payload, headers=headers)
@@ -59,4 +57,3 @@ def generate_sd_normal(prompt, chat_id):
             time.sleep(1)
         else:
             return None
-
