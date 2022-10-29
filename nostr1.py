@@ -65,7 +65,7 @@ def nostr_dalle():
                     connect()
                     current_prompt = event_msg.event.content[3:]
                     user_state_nostr[current_prompt] = payment.getinvoice()
-                    event = Event(public_key, str("https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=" + user_state_nostr[current_prompt]['payment_request'] + ".png"), kind=42,
+                    event = Event(public_key, str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + user_state_nostr[current_prompt]['payment_request'] + "&format=.png"), kind=42,
                                   tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
@@ -123,7 +123,7 @@ def nostr_dalle():
                     connect()
                     current_prompt = content[3:]
                     user_state_nostr[current_prompt] = payment.getinvoice()
-                    event = Event(public_key, encrypt_message(str("https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=" + user_state_nostr[current_prompt]['payment_request'] + ".png"), ss), kind=4,
+                    event = Event(public_key, encrypt_message(str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + user_state_nostr[current_prompt]['payment_request'] + "&format=.png"), ss), kind=4,
                                   tags=[["p", user_pk]], created_at=int(time.time()))
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
