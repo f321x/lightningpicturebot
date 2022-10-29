@@ -272,6 +272,7 @@ def sd_generate(prompt, type, user_pk):
                 stablediffusion.generate_sd_normal(prompt, id)
                 for guidance in range(7, 11):
                     rc.copy('sd_picture_gd_' + str(guidance) + "_" + id + '.png', 'dropbox:lpb')
+                    time.sleep(1)
                     os.remove('sd_picture_gd_' + str(guidance) + "_" + id + '.png')
                     link = list(rc.link('dropbox:lpb/' + 'sd_picture_gd_' + str(guidance) + "_" + id + '.png'))
                     link[-2] = '1'
@@ -280,7 +281,6 @@ def sd_generate(prompt, type, user_pk):
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                     relay_manager.publish_message(message_2)
-                    time.sleep(1)
                 logging.info('nostr sd: ' + prompt)
                 rc.execute('delete --min-age 90d dropbox:lpb')
                 break
