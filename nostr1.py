@@ -161,7 +161,7 @@ def nostr_dalle():
                         time.sleep(1)  # allow the messages to send
                 elif content == "/gsd":
                     if payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']):
-                        sd_generate(current_prompt)
+                        sd_generate(current_prompt, 4, user_pk)
                         current_prompt = ""
                     elif payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']) != True:
                         event = Event(public_key,
