@@ -103,7 +103,7 @@ def nostr_dalle():
                         time.sleep(1)  # allow the messages to send
                 elif event_msg.event.content == "/gsd":
                     if payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']):
-                        sd_generate(current_prompt)
+                        sd_generate(current_prompt, 42, None)
                         current_prompt = ""
                     elif payment.checkinvoice(user_state_nostr[current_prompt]['payment_hash']) != True:
                         event = Event(public_key,
@@ -142,6 +142,7 @@ def nostr_dalle():
                     relay_manager.publish_message(message_2)
                     time.sleep(1)  # allow the messages to send
                 elif content == "/start":
+                    time.sleep(1)
                     event = Event(public_key, encrypt_message(messages.start_nostr, ss), kind=4,
                                   tags=[["p", user_pk]], created_at=int(time.time()))
                     event.sign(private_key)
