@@ -84,6 +84,7 @@ def nostr_dalle():
                     relay_manager.publish_message(message_2)
                     time.sleep(1)  # allow the messages to send
                 elif event_msg.event.content == "/start":
+                    time.sleep(1)
                     event = Event(public_key, messages.start_nostr, kind=42,
                                   tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                     event.sign(private_key)
