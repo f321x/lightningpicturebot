@@ -204,7 +204,7 @@ def dalle_generate(prompt, type, user_pk):
                 os.remove(n)
                 link = list(rc.link('dropbox:lpb/' + n[29:]))
                 link[-2] = '1'
-                event = Event(public_key, ''.join(link) + " " + prompt, kind=42,
+                event = Event(public_key, ''.join(link) + " " + prompt + ", DALLE2", kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                 event.sign(private_key)
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
@@ -276,7 +276,7 @@ def sd_generate(prompt, type, user_pk):
                     os.remove('sd_picture_gd_' + str(guidance) + "_" + id + '.png')
                     link = list(rc.link('dropbox:lpb/' + 'sd_picture_gd_' + str(guidance) + "_" + id + '.png'))
                     link[-2] = '1'
-                    event = Event(public_key, ''.join(link) + " " + prompt, kind=42,
+                    event = Event(public_key, ''.join(link) + " " + prompt + ", Stable Diffusion", kind=42,
                                   tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
