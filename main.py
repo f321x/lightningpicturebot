@@ -58,15 +58,15 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         pass
     else:
         user_state[chat_id] = [update.message.text, payment.getinvoice(), False]
-        cloaked_invoice = str(payment.cloak_invoice(user_state[chat_id][1]['payment_request']))[:-1]
-        img = qrcode.make("lightning:" + cloaked_invoice)
+        img = qrcode.make("lightning:" + user_state[chat_id][1]['payment_request'])
         img.save(str(chat_id) + ".png")
         try:
             await context.bot.send_photo(chat_id=chat_id,
                                          photo=open(str(chat_id) + ".png", 'rb'))
             os.remove(str(chat_id) + ".png")
             await context.bot.send_message(chat_id=chat_id,
-                                           text="`lightning:" + cloaked_invoice + "`",
+                                           text="`lightning:" + user_state[chat_id][1][
+                                               'payment_request'] + "`",
                                            parse_mode='MarkdownV2')
             await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
                                                                  "/generate_stablediffusion \nonce you "
@@ -78,15 +78,15 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def group_prompt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_state[chat_id] = [update.message.text[8:], payment.getinvoice(), False]
-    cloaked_invoice = str(payment.cloak_invoice(user_state[chat_id][1]['payment_request']))[:-1]
-    img = qrcode.make("lightning:" + cloaked_invoice)
+    img = qrcode.make("lightning:" + user_state[chat_id][1]['payment_request'])
     img.save(str(chat_id) + ".png")
     try:
         await context.bot.send_photo(chat_id=chat_id,
                                      photo=open(str(chat_id) + ".png", 'rb'))
         os.remove(str(chat_id) + ".png")
         await context.bot.send_message(chat_id=chat_id,
-                                       text="`lightning:" + cloaked_invoice + "`",
+                                       text="`lightning:" + user_state[chat_id][1][
+                                           'payment_request'] + "`",
                                        parse_mode='MarkdownV2')
         await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
                                                              "/generate_stablediffusion \nonce you "
