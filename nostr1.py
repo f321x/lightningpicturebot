@@ -65,11 +65,13 @@ def nostr_dalle():
                     connect()
                     current_prompt = event_msg.event.content[3:]
                     user_state_nostr[current_prompt] = payment.getinvoice()
-                    cloaked_invoice = str(payment.cloak_invoice(user_state_nostr[current_prompt]['payment_request']))[:-1]
-                    event = Event(public_key, str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
-                                                  cloaked_invoice + "&format=.png" +
-                                                  " " +
-                                                  cloaked_invoice), kind=42,
+                    event = Event(public_key, str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + user_state_nostr[current_prompt]['payment_request'] + "&format=.png"), kind=42,
+                                  tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
+                    event.sign(private_key)
+                    message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                    relay_manager.publish_message(message_2)
+                    time.sleep(2)  # allow the messages to send
+                    event = Event(public_key, str(user_state_nostr[current_prompt]['payment_request']), kind=42,
                                   tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
@@ -122,10 +124,13 @@ def nostr_dalle():
                     connect()
                     current_prompt = content[3:]
                     user_state_nostr[current_prompt] = payment.getinvoice()
-                    cloaked_invoice = str(payment.cloak_invoice(user_state_nostr[current_prompt]['payment_request']))[:-1]
-                    event = Event(public_key, encrypt_message(str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
-                                                                  cloaked_invoice + "&format=.png") + " " +
-                                                              str(cloaked_invoice), ss), kind=4,
+                    event = Event(public_key, encrypt_message(str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + user_state_nostr[current_prompt]['payment_request'] + "&format=.png"), ss), kind=4,
+                                  tags=[["p", user_pk]], created_at=int(time.time()))
+                    event.sign(private_key)
+                    message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                    relay_manager.publish_message(message_2)
+                    time.sleep(2)  # allow the messages to send
+                    event = Event(public_key, encrypt_message(str(user_state_nostr[current_prompt]['payment_request']), ss), kind=4,
                                   tags=[["p", user_pk]], created_at=int(time.time()))
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
