@@ -2,6 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 headers = {
@@ -43,5 +44,5 @@ def cloak_invoice(invoice):
     if cloaked_invoice.status_code == 200:
         return cloaked_invoice.text
     else:
-        print("lnproxy down")
+        print(cloaked_invoice.status_code)
         return invoice
