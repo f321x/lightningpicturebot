@@ -65,6 +65,7 @@ def nostr_dalle():
                     connect()
                     current_prompt = event_msg.event.content[3:]
                     user_state_nostr[current_prompt] = payment.getinvoice()
+                    user_state_nostr[current_prompt]['payment_request'] = payment.cloak_invoice(user_state_nostr[current_prompt]['payment_request'])
                     event = Event(public_key, str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
                                                   user_state_nostr[current_prompt]['payment_request'] + "&format=.png" +
                                                   " " +
@@ -121,6 +122,7 @@ def nostr_dalle():
                     connect()
                     current_prompt = content[3:]
                     user_state_nostr[current_prompt] = payment.getinvoice()
+                    user_state_nostr[current_prompt]['payment_request'] = payment.cloak_invoice(user_state_nostr[current_prompt]['payment_request'])
                     event = Event(public_key, encrypt_message(str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
                                                                   user_state_nostr[current_prompt]['payment_request'] + "&format=.png") + " " +
                                                               str(user_state_nostr[current_prompt]['payment_request']), ss), kind=4,
