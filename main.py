@@ -3,7 +3,7 @@ import payment
 import stablediffusion
 import os
 import logging
-from dalle2 import Dalle2
+import dalle2
 # you need the python-telegram-bot prerelease (v20.0)
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
@@ -23,9 +23,6 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
-
-# initialize dalle with api token
-dalle = Dalle2(os.environ['openai_token'])
 
 # telegram functions
 
@@ -104,7 +101,7 @@ async def paid_dalle(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                            text="Generating pictures, this will take around 1 minute..")
             for generating in range(2):
                 try:
-                    file_paths = dalle.generate_and_download(user_state[chat_id][0])
+                    file_paths = dalle2.generate_and_download(user_state[chat_id][0])
                     if isinstance(file_paths, list):
                         for n in file_paths:
                             await context.bot.send_photo(chat_id=chat_id, photo=open(n, 'rb'))
