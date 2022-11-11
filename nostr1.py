@@ -12,14 +12,12 @@ from nostr.filter import Filter, Filters
 from nostr.event import Event, EventKind
 from nostr.message_type import ClientMessageType
 from dotenv import load_dotenv
-from dalle2 import Dalle2
+import dalle2
 import logging
 from rclone.rclone import Rclone
 import stablediffusion
 
 rc = Rclone()
-
-dalle = Dalle2(os.environ['openai_token'])
 
 logging.basicConfig(
     filename="mylog.txt",
@@ -172,7 +170,8 @@ def nostr_dalle():
             connect()
 
 def dalle_generate(prompt, type, user_pk):
-    generations = dalle.generate_and_download(str(prompt))
+    id = str(int(time.time()))
+    generations = dalle2.generate_and_download(str(prompt), id)
     if type == 42:
         if generations == "violation":
             logging.info("nostr dalle violation: " + prompt)
@@ -195,7 +194,8 @@ def dalle_generate(prompt, type, user_pk):
             for n in generations:
                 rc.copy(n, 'dropbox:lpb')
                 os.remove(n)
-                link = list(rc.link('dropbox:lpb/' + n[29:]))
+                m = n.replace(os.getcwd() + "/", "")
+                link = list(rc.link('dropbox:lpb/' + m))
                 link[-2] = '1'
                 event = Event(public_key, ''.join(link) + " " + prompt + ", DALLE2", kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
@@ -231,7 +231,8 @@ def dalle_generate(prompt, type, user_pk):
             for n in generations:
                 rc.copy(n, 'dropbox:lpb')
                 os.remove(n)
-                link = list(rc.link('dropbox:lpb/' + n[29:]))
+                m = n.replace(os.getcwd() + "/", "")
+                link = list(rc.link('dropbox:lpb/' + m))
                 link[-2] = '1'
                 event = Event(public_key, encrypt_message(''.join(link) + " " + prompt + ", DALLE2", ss), kind=4,
                               tags=[["p", user_pk]], created_at=int(time.time()))
