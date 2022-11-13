@@ -192,7 +192,7 @@ async def paid_midjourney(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if payment.checkinvoice(user_state[chat_id][1]['payment_hash']):
             await context.bot.send_message(chat_id=chat_id,
                                            text="Generating pictures, this will take around 1 minute..\n"
-                                                "Pictures appear black if the bot interprets your prompt as NSFW")
+                                                "Pictures appear black if the AI interprets your prompt as NSFW")
             try:
                 images = midjourney.generate_mj(user_state[chat_id][0], str(chat_id))
                 if images == "failure":
