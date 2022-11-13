@@ -73,7 +73,7 @@ def nostr_dalle():
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                     relay_manager.publish_message(message_2)
                     time.sleep(2)  # allow the messages to send
-                    event = Event(public_key, "Send /gd (DALLE2) or /gsd (Stable Diffusion) or /gmj (Midjourney like, experimental) once you paid the invoice to start generating", kind=42,
+                    event = Event(public_key, "Send /gd (DALLE2) or /gsd (Stable Diffusion) or /gmj (Midjourney like, experimental, 2 pics) once you paid the invoice to start generating", kind=42,
                                   tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
@@ -165,7 +165,7 @@ def nostr_dalle():
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                     relay_manager.publish_message(message_2)
                     time.sleep(2)  # allow the messages to send
-                    event = Event(public_key, encrypt_message("Send /gd (DALLE2) or /gsd (Stable Diffusion) or /gmj (Midjourney like, experimental) once you paid the invoice to start generating", ss), kind=4,
+                    event = Event(public_key, encrypt_message("Send /gd (DALLE2) or /gsd (Stable Diffusion) or /gmj (Midjourney like, experimental, 2 pics) once you paid the invoice to start generating", ss), kind=4,
                                   tags=[["p", user_pk]], created_at=int(time.time()))
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])

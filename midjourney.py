@@ -17,7 +17,7 @@ def generate_mj(prompt, id):
     files = []
     name = str(prompt.replace(" ", ""))
     try:
-        for picture in range(1, 5):
+        for picture in range(1, 3):
             output = version.predict(prompt=prompt, width=1024, height=768)
             file = open(name + str(id) + str(counter) + ".png", "wb")
             dl_file = requests.get(output[0])

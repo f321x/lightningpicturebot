@@ -68,7 +68,7 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                            parse_mode='MarkdownV2')
             await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
                                                                  "/generate_stablediffusion \nor \n"
-                                                                 "/generate_midjourney (experimental MJ model) \nonce you "
+                                                                 "/generate_midjourney (experimental MJ model, 2 pics) \nonce you "
                                                                  "paid the invoice")
         except:
             logging.error("Answer to command failed")
@@ -89,7 +89,7 @@ async def group_prompt(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                        parse_mode='MarkdownV2')
         await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
                                                              "/generate_stablediffusion \nor \n"
-                                                             "/generate_midjourney (experimental)\nonce you "
+                                                             "/generate_midjourney (experimental, 2 pics)\nonce you "
                                                              "paid the invoice")
     except:
         logging.error("Answer to command failed")
