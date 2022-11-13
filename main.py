@@ -4,6 +4,7 @@ import stablediffusion
 import os
 import logging
 import dalle2
+import midjourney
 # you need the python-telegram-bot prerelease (v20.0)
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
@@ -66,7 +67,8 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                                'payment_request'] + "`",
                                            parse_mode='MarkdownV2')
             await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
-                                                                 "/generate_stablediffusion \nonce you "
+                                                                 "/generate_stablediffusion \nor \n"
+                                                                 "/generate_midjourney (experimental MJ model) \nonce you "
                                                                  "paid the invoice")
         except:
             logging.error("Answer to command failed")
@@ -183,6 +185,46 @@ async def paid_stablediffusion(update: Update, context: ContextTypes.DEFAULT_TYP
     else:
         pass
 
+async def paid_midjourney(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    if chat_id in user_state:
+        if payment.checkinvoice(user_state[chat_id][1]['payment_hash']):
+            await context.bot.send_message(chat_id=chat_id,
+                                           text="Generating pictures, this will take around 1 minute..")
+            try:
+                images = midjourney.generate_mj(user_state[chat_id][0], str(chat_id))
+                if images == "failure":
+                    logging.error(user_state[chat_id][0])
+                    await context.bot.send_message(chat_id=chat_id,
+                                                    text="This request failed due to some problems with the MJ "
+                                                        "API.")
+                    await context.bot.send_message(chat_id=chat_id,
+                                                    text="You can use /refund lnbc...(invoice) with a 1000 "
+                                                        "Satoshi invoice to get a refund.")
+                    user_state[chat_id][2] = True
+                else:
+                    for file in images:
+                        await context.bot.send_photo(chat_id=chat_id, photo=open(file, 'rb'))
+                        os.remove(file)
+                        time.sleep(1)
+                        logging.info('mj: ' + user_state[chat_id][0])
+                        user_state.pop(chat_id)
+                        break
+            except:
+                logging.error(user_state[chat_id][0])
+                await context.bot.send_message(chat_id=chat_id,
+                                                text="This request failed due to some problems with the MJ "
+                                                    "API.")
+                await context.bot.send_message(chat_id=chat_id,
+                                                text="You can use /refund lnbc...(invoice) with a 1000 "
+                                                    "Satoshi invoice to get a refund.")
+                user_state[chat_id][2] = True
+        else:
+            await context.bot.send_message(chat_id=update.effective_chat.id,
+                                           text="You haven't paid, press \n/generate_stablediffusion again once you "
+                                                "paid the invoice")
+    else:
+        pass
 
 async def terms(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=messages.terms)
@@ -250,6 +292,7 @@ if __name__ == '__main__':
     group_handler = CommandHandler('prompt', group_prompt)
     payment_handler_dalle = CommandHandler('generate_dalle2', paid_dalle)
     payment_handler_sd = CommandHandler('generate_stablediffusion', paid_stablediffusion)
+    payment_handler_mj = CommandHandler('generate_midjourney', paid_midjourney)
     term_handler = CommandHandler('terms', terms)
     problem_handler = CommandHandler('problem', problem)
     source_handler = CommandHandler('source', source)
@@ -263,6 +306,7 @@ if __name__ == '__main__':
     application.add_handler(group_handler)
     application.add_handler(payment_handler_dalle)
     application.add_handler(payment_handler_sd)
+    application.add_handler(payment_handler_mj)
     application.add_handler(term_handler)
     application.add_handler(problem_handler)
     application.add_handler(source_handler)
