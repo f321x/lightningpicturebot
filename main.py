@@ -209,7 +209,7 @@ async def paid_midjourney(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         await context.bot.send_photo(chat_id=chat_id, photo=open(file, 'rb'))
                         os.remove(file)
                         time.sleep(1)
-                        logging.info('mj: ' + user_state[chat_id][0])
+                        logging.info('mj_tg: ' + user_state[chat_id][0])
                         user_state.pop(chat_id)
                         break
             except:
