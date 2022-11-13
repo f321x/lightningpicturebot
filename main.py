@@ -88,7 +88,8 @@ async def group_prompt(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                            'payment_request'] + "`",
                                        parse_mode='MarkdownV2')
         await context.bot.send_message(chat_id=chat_id, text="Press \n/generate_dalle2 \nor \n "
-                                                             "/generate_stablediffusion \nonce you "
+                                                             "/generate_stablediffusion \nor \n"
+                                                             "/generate_midjourney (experimental)\nonce you "
                                                              "paid the invoice")
     except:
         logging.error("Answer to command failed")
@@ -190,7 +191,8 @@ async def paid_midjourney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if chat_id in user_state:
         if payment.checkinvoice(user_state[chat_id][1]['payment_hash']):
             await context.bot.send_message(chat_id=chat_id,
-                                           text="Generating pictures, this will take around 1 minute..")
+                                           text="Generating pictures, this will take around 1 minute..\n"
+                                                "Pictures appear black if the bot interprets your prompt as NSFW")
             try:
                 images = midjourney.generate_mj(user_state[chat_id][0], str(chat_id))
                 if images == "failure":
