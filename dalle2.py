@@ -10,6 +10,18 @@ openai.api_key = os.getenv("openai_token")
 
 def generate_and_download(prompt, id=None):
     try:
+        prompt = prompt.replace(".", " ")
+        prompt = prompt.replace(",", " ")
+        prompt = prompt.replace("""""", " ")
+        prompt = prompt.replace("'", " ")
+        prompt = prompt.replace("!", " ")
+        prompt = prompt.replace("?", " ")
+        prompt = prompt.replace("&", " ")
+        prompt = prompt.replace(":", " ")
+        prompt = prompt.replace("-", " ")
+        prompt = prompt.replace("#", " ")
+        prompt = prompt.replace("*", " ")
+        prompt = prompt.replace("+", " ")
         response = openai.Image.create(
             prompt=prompt,
             n=4,
@@ -39,6 +51,7 @@ def generate_and_download(prompt, id=None):
     except:
         print("dalle2 error")
         return "failure"
+
 
 # old dalle2 api module before the official API was available:
 
