@@ -16,6 +16,11 @@ def generate_mj(prompt, id):
     counter = 0
     files = []
     name = str(prompt.replace(" ", ""))
+    name = str(name.replace(".", ""))
+    name = str(name.replace(",", ""))
+    name = str(name.replace("!", ""))
+    name = str(name.replace("?", ""))
+    name = str(name.replace(":", ""))
     try:
         for picture in range(1, 3):
             output = version.predict(prompt=prompt, width=1024, height=768)

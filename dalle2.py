@@ -12,7 +12,6 @@ def generate_and_download(prompt, id=None):
     try:
         prompt = prompt.replace(".", " ")
         prompt = prompt.replace(",", " ")
-        prompt = prompt.replace("""""", " ")
         prompt = prompt.replace("'", " ")
         prompt = prompt.replace("!", " ")
         prompt = prompt.replace("?", " ")
@@ -160,3 +159,4 @@ def generate_and_download(prompt, id=None):
 #             print(f"✔️ Downloaded: {file_path}")
 #
 #         return file_paths
+
