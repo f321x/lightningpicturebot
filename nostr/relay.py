@@ -1,11 +1,17 @@
 import json
 from threading import Lock
-from websocket import WebSocketApp
+from websocket import WebSocketApp, WebSocketConnectionClosedException
 from .event import Event
 from .filter import Filters
 from .message_pool import MessagePool
 from .message_type import RelayMessageType
 from .subscription import Subscription
+import time
+
+import logging
+logger = logging.getLogger('websocket')
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler())
 
 class RelayPolicy:
     def __init__(self, should_read: bool=True, should_write: bool=True) -> None:
@@ -44,7 +50,13 @@ class Relay:
         self.ws.close()
 
     def publish(self, message: str):
-        self.ws.send(message)
+        for n in range(3):
+            try:
+                self.ws.send(message)
+                break
+            except WebSocketConnectionClosedException as e:
+                logger.exception("failed to send message to {}".format(self.url))
+                time.sleep(2)
 
     def add_subscription(self, id, filters: Filters):
         with self.lock:
