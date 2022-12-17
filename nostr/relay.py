@@ -44,7 +44,7 @@ class Relay:
             on_close=self._on_close)
 
     def connect(self, ssl_options: dict=None):
-        self.ws.run_forever(sslopt=ssl_options, ping_interval=60, ping_timeout=10, ping_payload="2")
+        self.ws.run_forever(sslopt=ssl_options, ping_interval=10, ping_timeout=10, ping_payload="2")
 
     def close(self):
         self.ws.close()
@@ -56,6 +56,7 @@ class Relay:
                 break
             except WebSocketConnectionClosedException as e:
                 logger.exception("failed to send message to {}".format(self.url))
+                self.connect()
                 time.sleep(2)
 
     def add_subscription(self, id, filters: Filters):
