@@ -289,6 +289,11 @@ def nostr_midjourney(prompt, message_type, user_pubk):
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                 relay_manager.publish_message(message_2)
                 time.sleep(1.25)  # allow the messages to send
+                event = Event(public_key, ''.join(link) + " " + prompt + ", Midjourney model", created_at=int(time.time()))
+                event.sign(private_key)
+                message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                relay_manager.publish_message(message_2)
+                time.sleep(1.25)  # allow the messages to send
             rc.execute('delete --min-age 360d dropbox:lpb')
             time.sleep(1)  # allow the messages to send
     elif message_type == 4:
@@ -355,6 +360,11 @@ def dalle_generate(prompt, type, user_pk):
                 link[-2] = '1'
                 event = Event(public_key, ''.join(link) + " " + prompt + ", DALLE2", kind=42,
                               tags=[["e", os.environ['nostr_chat_id']]], created_at=int(time.time()))
+                event.sign(private_key)
+                message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                relay_manager.publish_message(message_2)
+                time.sleep(1.25)  # allow the messages to send
+                event = Event(public_key, ''.join(link) + " " + prompt + ", DALLE2", created_at=int(time.time()))
                 event.sign(private_key)
                 message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                 relay_manager.publish_message(message_2)
@@ -435,6 +445,13 @@ def sd_generate(prompt, type, user_pk):
                     event.sign(private_key)
                     message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
                     relay_manager.publish_message(message_2)
+                    time.sleep(1.25)
+                    event = Event(public_key, ''.join(link) + " " + prompt + ", Stable Diffusion",
+                                  created_at=int(time.time()))
+                    event.sign(private_key)
+                    message_2 = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
+                    relay_manager.publish_message(message_2)
+                    time.sleep(1.25)
                 logging.info('nostr sd: ' + prompt)
                 rc.execute('delete --min-age 90d dropbox:lpb')
                 break
