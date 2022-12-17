@@ -64,7 +64,7 @@ def nostr_dalle():
             event_msg = relay_manager.message_pool.get_event()
             if event_msg.event.kind == 42:
                 if event_msg.event.content[0:3] == "/p ":
-                    connect()
+                    # connect()
                     current_prompt = event_msg.event.content[3:]
                     user_state_nostr[current_prompt] = payment.getinvoice()
                     event = Event(public_key, str("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
@@ -161,7 +161,7 @@ def nostr_dalle():
                 ss = compute_shared_secret(private_key, user_pk)
                 content = decrypt_message(event_msg.event.content, ss)
                 if content[0:3] == "/p ":
-                    connect()
+                    # connect()
                     current_prompt = content[3:]
                     user_state_nostr[current_prompt] = payment.getinvoice()
                     event = Event(public_key,
@@ -276,7 +276,7 @@ def nostr_midjourney(prompt, message_type, user_pubk):
             relay_manager.publish_message(message_2)
             time.sleep(1.25)  # allow the messages to send
         else:
-            connect()
+            # connect()
             for file in images:
                 rc.copy(file, 'dropbox:lpb')
                 os.remove(file)
@@ -304,7 +304,7 @@ def nostr_midjourney(prompt, message_type, user_pubk):
             relay_manager.publish_message(message_2)
             time.sleep(1.25)  # allow the messages to send
         else:
-            connect()
+            # connect()
             for image in images:
                 rc.copy(image, 'dropbox:lpb')
                 os.remove(image)
@@ -346,7 +346,7 @@ def dalle_generate(prompt, type, user_pk):
             relay_manager.publish_message(message_2)
             time.sleep(1.25)  # allow the messages to send
         else:
-            connect()
+            # connect()
             for n in generations:
                 rc.copy(n, 'dropbox:lpb')
                 os.remove(n)
@@ -386,7 +386,7 @@ def dalle_generate(prompt, type, user_pk):
             relay_manager.publish_message(message_2)
             time.sleep(1.25)  # allow the messages to send
         else:
-            connect()
+            # connect()
             for n in generations:
                 rc.copy(n, 'dropbox:lpb')
                 os.remove(n)
@@ -405,7 +405,7 @@ def dalle_generate(prompt, type, user_pk):
 
 def sd_generate(prompt, type, user_pk):
     id = str(int(time.time()))
-    connect()
+    # connect()
     if type == 42:
         for generating in range(2):
             if stablediffusion.find_seed(prompt) == "seed_too_long":
